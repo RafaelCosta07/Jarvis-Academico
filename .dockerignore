@@ -1,0 +1,17 @@
+node_modules
+__pycache__
+.venv
+.env
+.env.*
+*.pyc
+*.pyo
+.DS_Store
+.git
+.gitignore
+*.log
+dist
+.next
+coverage
+.pytest_cache
+.mypy_cache
+.ruff_cache

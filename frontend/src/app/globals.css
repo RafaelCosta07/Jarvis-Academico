@@ -1,0 +1,172 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* ── Shadcn aliases (dark values permanentes — JARVIS não tem light mode) ── */
+  --color-background: hsl(240 10% 3.9%);
+  --color-foreground: hsl(0 0% 98%);
+  --color-card: hsl(240 5% 6%);
+  --color-card-foreground: hsl(0 0% 98%);
+  --color-popover: hsl(240 5% 6%);
+  --color-popover-foreground: hsl(0 0% 98%);
+  --color-primary: hsl(250 95% 65%);
+  --color-primary-foreground: hsl(0 0% 98%);
+  --color-secondary: hsl(240 5% 10%);
+  --color-secondary-foreground: hsl(0 0% 98%);
+  --color-muted: hsl(240 5% 10%);
+  --color-muted-foreground: hsl(240 5% 64.9%);
+  --color-accent: hsl(240 5% 10%);
+  --color-accent-foreground: hsl(0 0% 98%);
+  --color-destructive: hsl(0 72% 51%);
+  --color-border: hsl(240 3.7% 15.9%);
+  --color-input: hsl(240 3.7% 15.9%);
+  --color-ring: hsl(250 95% 65%);
+
+  /* ── JARVIS — Cores base ── */
+  --color-surface: hsl(240 5% 6%);
+  --color-primary-start: hsl(250 95% 65%);
+  --color-primary-end: hsl(217 91% 60%);
+  --color-primary-glow: hsl(250 95% 65% / 0.15);
+
+  /* ── JARVIS — Tons acadêmicos ── */
+  --color-academic-yellow: hsl(45 93% 58%);
+  --color-academic-green: hsl(142 76% 36%);
+  --color-academic-red: hsl(0 72% 51%);
+  --color-academic-blue: hsl(199 89% 48%);
+
+  /* ── JARVIS — Glassmorphism ── */
+  --color-glass-bg: hsl(240 10% 15% / 0.6);
+  --color-glass-border: hsl(0 0% 100% / 0.1);
+
+  /* ── Tipografia ── */
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), 'Fira Code', monospace;
+
+  /* ── Border radius ── */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 2rem;
+  --radius-4xl: 2.5rem;
+
+  /* ── Sombras ── */
+  --shadow-neural: 0 0 30px hsl(250 95% 65% / 0.2), 0 10px 25px rgb(0 0 0 / 0.3);
+}
+
+/* Glass blur fora do @theme (não gera utilitário Tailwind) */
+:root {
+  --glass-blur: 12px;
+}
+
+body {
+  background: hsl(240 10% 3.9%);
+  color: hsl(0 0% 98%);
+  font-family: var(--font-sans);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+}
+
+@keyframes pulse-wave {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1.0); }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes fade-slide-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Layout grid responsivo ── */
+@layer utilities {
+  .shell-grid {
+    display: grid;
+    grid-template-columns: 18% 64% 18%;
+  }
+}
+
+@media (min-width: 1440px) {
+  .shell-grid { grid-template-columns: 20% 60% 20%; }
+}
+
+@media (min-width: 1920px) {
+  .shell-grid { grid-template-columns: 22% 56% 22%; }
+}
+
+/* ── Markdown (mensagens da IA) ── */
+.prose-jarvis p { margin-bottom: 0.5rem; }
+.prose-jarvis h1, .prose-jarvis h2, .prose-jarvis h3 { font-weight: 600; margin-bottom: 0.5rem; }
+.prose-jarvis code:not(pre code) { font-family: var(--font-mono); background: var(--color-surface); padding: 0.1rem 0.3rem; border-radius: var(--radius-sm); font-size: 0.875em; }
+.prose-jarvis pre { background: var(--color-surface); padding: 0.75rem 1rem; border-radius: var(--radius-md); overflow-x: auto; margin-bottom: 0.75rem; }
+.prose-jarvis pre code { font-family: var(--font-mono); font-size: 0.875em; }
+.prose-jarvis ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 0.5rem; }
+.prose-jarvis ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 0.5rem; }
+.prose-jarvis li { margin-bottom: 0.25rem; }
+.prose-jarvis strong { font-weight: 600; }
+.prose-jarvis a { color: var(--color-primary-start); text-decoration: underline; }
+.prose-jarvis blockquote { border-left: 2px solid var(--color-primary-start); padding-left: 0.75rem; color: var(--color-muted-foreground); margin-left: 0; }
+.prose-jarvis > *:last-child { margin-bottom: 0; }
+
+/* ── Chat header — borda pulsante quando ativo ── */
+@keyframes border-gradient-pulse {
+  0%, 100% { border-bottom-color: hsl(250 95% 65%); }
+  50% { border-bottom-color: hsl(217 91% 60%); }
+}
+.chat-header-pulse { animation: border-gradient-pulse 1.2s ease-in-out infinite; }
+
+/* ── Input — glow animado no foco ── */
+@keyframes input-glow-pulse {
+  0%, 100% { box-shadow: 0 0 0 1px hsl(250 95% 65% / 0.8), 0 0 8px hsl(250 95% 65% / 0.2); }
+  50% { box-shadow: 0 0 0 1px hsl(217 91% 60% / 0.8), 0 0 8px hsl(217 91% 60% / 0.2); }
+}
+.chat-input-focused {
+  outline: none;
+  border-color: transparent;
+  animation: input-glow-pulse 2s ease-in-out infinite;
+}
+
+/* ── Confetti — partículas ao concluir tarefa ── */
+@keyframes confetti-fly {
+  from { transform: rotate(var(--confetti-r)) translateX(0) scale(1); opacity: 1; }
+  to   { transform: rotate(var(--confetti-r)) translateX(22px) scale(0); opacity: 0; }
+}
+
+/* ── Envio — flash left→right na borda do input ── */
+@keyframes send-flash {
+  from { transform: scaleX(0); transform-origin: left; opacity: 1; }
+  to   { transform: scaleX(1); transform-origin: left; opacity: 0; }
+}
+.send-flash-bar {
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(to right, var(--color-primary-start), var(--color-primary-end));
+  animation: send-flash 0.6s ease-out forwards;
+  pointer-events: none;
+}
+
+/* ── Erro — shake suave ── */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-3px); }
+  40%, 80% { transform: translateX(3px); }
+}
+
+/* ── Scroll da lista de chat ── */
+.scroll-area-chat { scrollbar-width: thin; scrollbar-color: var(--color-border) transparent; }
+.scroll-area-chat::-webkit-scrollbar { width: 5px; }
+.scroll-area-chat::-webkit-scrollbar-track { background: transparent; }
+.scroll-area-chat::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 9999px; }
+.scroll-area-chat::-webkit-scrollbar-thumb:hover { background: var(--color-muted-foreground); }
