@@ -1,4 +1,8 @@
+from pathlib import Path
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+_BACKEND_DIR = Path(__file__).parent.parent.parent  # config.py → core/ → app/ → backend/
 
 
 class Settings(BaseSettings):
@@ -13,8 +17,8 @@ class Settings(BaseSettings):
     embedding_model: str = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
     chunk_size: int = 800
     chunk_overlap: int = 100
-    faiss_index_path: str = "data/faiss_index.bin"
-    documents_dir: str = "data/documents"
+    faiss_index_path: str = str(_BACKEND_DIR / "data" / "faiss_index.bin")
+    documents_dir: str = str(_BACKEND_DIR / "data" / "documents")
 
 
 settings = Settings()
