@@ -1,10 +1,10 @@
 'use client'
 import { useState, type KeyboardEvent } from 'react'
 import { Input } from '@/components/ui/input'
+import GradientButton from '@/components/ui/GradientButton'
 import { criarTarefa } from '@/lib/api'
 import { toast } from '@/lib/toast'
 import type { Tarefa } from '@/types/api'
-import { Plus } from 'lucide-react'
 
 interface TaskQuickAddProps {
   onAdded: (tarefa: Tarefa) => void
@@ -36,16 +36,22 @@ export default function TaskQuickAdd({ onAdded }: TaskQuickAddProps) {
   }
 
   return (
-    <div className="relative flex items-center">
-      <Plus className="absolute left-2 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
+    <div className="flex gap-2 items-center">
       <Input
         placeholder="Nova tarefa…"
         value={value}
         onChange={e => setValue(e.target.value)}
         onKeyDown={onKeyDown}
         disabled={loading}
-        className="pl-7 h-8 text-xs bg-surface border-glass-border placeholder:text-muted-foreground"
+        className="flex-1 h-8 text-xs bg-surface border-glass-border placeholder:text-muted-foreground"
       />
+      <GradientButton
+        onClick={() => void submit()}
+        disabled={!value.trim() || loading}
+        className="h-8 px-3 py-0 text-xs shrink-0"
+      >
+        {loading ? '…' : '+'}
+      </GradientButton>
     </div>
   )
 }

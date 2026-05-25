@@ -2,17 +2,12 @@
 import { isToday, isYesterday, formatDistanceToNow } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { X } from 'lucide-react'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import GradientButton from '@/components/ui/GradientButton'
+import MateriaisList from './MateriaisList'
+import { useScrollFade } from '@/hooks/useScrollFade'
 import type { Conversation } from '@/types/conversation'
-
-const MATERIALS = [
-  'introducao-ia.pdf',
-  'redes-neurais.pdf',
-  'processamento-linguagem.pdf',
-]
 
 function formatDate(date: Date): string {
   if (isToday(date)) return 'Hoje'
@@ -56,8 +51,11 @@ export interface LeftSidebarProps {
 }
 
 export default function LeftSidebar({ conversations, activeId, onNew, onSelect, onDelete }: LeftSidebarProps) {
+  const handleScrollConversas = useScrollFade()
+  const handleScrollMateriais = useScrollFade()
+
   return (
-    <aside className="h-full bg-surface border-r border-border flex flex-col">
+    <aside className="h-full bg-surface border-r border-border flex flex-col overflow-hidden">
       <div className="p-4 border-b border-border flex flex-col gap-3 shrink-0">
         <div>
           <span className="text-xl font-bold bg-gradient-to-r from-[var(--color-primary-start)] to-[var(--color-primary-end)] bg-clip-text text-transparent">JARVIS</span>
@@ -65,9 +63,9 @@ export default function LeftSidebar({ conversations, activeId, onNew, onSelect, 
         </div>
         <GradientButton onClick={onNew} className="w-full text-sm py-1.5">+ Nova Conversa</GradientButton>
       </div>
-      <ScrollArea className="flex-1">
-        <div className="px-2 py-2">
-          <p className="text-[10px] uppercase tracking-widest text-muted-foreground px-2 pb-1">Conversas</p>
+      <div className="flex flex-col flex-1 min-h-0 px-2 py-2">
+        <p className="text-[10px] uppercase tracking-widest text-muted-foreground px-2 pb-1 shrink-0">Conversas</p>
+        <div className="flex-1 overflow-y-auto min-h-0 scroll-fade" onScroll={handleScrollConversas}>
           {conversations.length === 0 && (
             <p className="text-xs text-muted-foreground px-2 py-1">Nenhuma conversa ainda.</p>
           )}
@@ -75,17 +73,14 @@ export default function LeftSidebar({ conversations, activeId, onNew, onSelect, 
             <ConversationItem key={c.id} conversation={c} isActive={c.id === activeId} onSelect={onSelect} onDelete={onDelete} />
           ))}
         </div>
-        <Separator className="mx-2" />
-        <div className="px-2 py-2">
-          <p className="text-[10px] uppercase tracking-widest text-muted-foreground px-2 pb-1">Materiais</p>
-          {MATERIALS.map(name => (
-            <div key={name} className="flex items-center gap-2 px-2 py-1.5 text-xs text-muted-foreground">
-              <span>📄</span>
-              <span className="truncate">{name}</span>
-            </div>
-          ))}
+      </div>
+      <Separator className="mx-2 shrink-0" />
+      <div className="shrink-0 px-2 py-2">
+        <p className="text-[10px] uppercase tracking-widest text-muted-foreground px-2 pb-1">Materiais</p>
+        <div className="overflow-y-auto max-h-48 scroll-fade" onScroll={handleScrollMateriais}>
+          <MateriaisList />
         </div>
-      </ScrollArea>
+      </div>
       <Separator />
       <div className="p-3 flex items-center gap-2 shrink-0">
         <Avatar className="w-6 h-6"><AvatarFallback className="text-[10px]">E</AvatarFallback></Avatar>

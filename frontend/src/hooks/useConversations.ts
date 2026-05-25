@@ -1,5 +1,5 @@
 'use client'
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import type { ConversationStore } from '@/lib/conversation-store'
 import type { Conversation } from '@/types/conversation'
 import type { Message } from '@/types/chat'
@@ -12,8 +12,12 @@ function titleFromMessages(messages: Message[]): string {
 }
 
 export function useConversations(store: ConversationStore) {
-  const [conversations, setConversations] = useState<Conversation[]>(() => store.getAll())
+  const [conversations, setConversations] = useState<Conversation[]>([])
   const [activeId, setActiveId] = useState<string | null>(null)
+
+  useEffect(() => {
+    setConversations(store.getAll())
+  }, [store])
 
   const refresh = useCallback(() => setConversations(store.getAll()), [store])
 

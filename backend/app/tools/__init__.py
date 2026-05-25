@@ -1,3 +1,4 @@
+from app.tools.adicionar_evento import executar_adicionar_evento
 from app.tools.adicionar_tarefa import executar_adicionar_tarefa
 from app.tools.buscar_material_rag import executar_buscar_material_rag
 from app.tools.concluir_tarefa import executar_concluir_tarefa
@@ -5,6 +6,53 @@ from app.tools.consultar_agenda import executar_consultar_agenda
 from app.tools.listar_tarefas import executar_listar_tarefas
 
 TOOLS_REGISTRY: list[dict] = [
+    {
+        "type": "function",
+        "function": {
+            "name": "adicionar_evento",
+            "description": (
+                "Adiciona um novo evento à agenda acadêmica do estudante. "
+                "Use quando o usuário quiser registrar algo que ACONTECE em data e hora "
+                "específicas: aulas, provas, reuniões, prazos de entrega com horário. "
+                "NÃO use para tarefas a fazer sem hora definida — use adicionar_tarefa."
+            ),
+            "parameters": {
+                "type": "object",
+                "required": ["titulo", "data", "tipo"],
+                "properties": {
+                    "titulo": {
+                        "type": "string",
+                        "description": "Nome do evento. Ex: 'Aula de IA', 'Prova de Cálculo'.",
+                    },
+                    "data": {
+                        "type": "string",
+                        "description": "Data no formato YYYY-MM-DD. Ex: '2026-06-15'.",
+                    },
+                    "hora_inicio": {
+                        "type": "string",
+                        "description": "Horário de início no formato HH:MM. Ex: '14:00'. Opcional.",
+                    },
+                    "hora_fim": {
+                        "type": "string",
+                        "description": "Horário de fim no formato HH:MM. Ex: '16:00'. Opcional.",
+                    },
+                    "tipo": {
+                        "type": "string",
+                        "enum": ["aula", "prova", "prazo", "outro"],
+                        "description": "Tipo do evento.",
+                    },
+                    "local": {
+                        "type": "string",
+                        "description": "Local do evento. Ex: 'Sala B-204', 'Google Meet'. Opcional.",
+                    },
+                    "descricao": {
+                        "type": "string",
+                        "description": "Descrição adicional. Opcional.",
+                    },
+                },
+            },
+        },
+    },
     {
         "type": "function",
         "function": {
@@ -167,9 +215,12 @@ TOOLS_REGISTRY: list[dict] = [
 ]
 
 TOOLS_EXECUTORES: dict = {
+    "adicionar_evento": executar_adicionar_evento,
     "consultar_agenda": executar_consultar_agenda,
     "listar_tarefas": executar_listar_tarefas,
     "adicionar_tarefa": executar_adicionar_tarefa,
     "concluir_tarefa": executar_concluir_tarefa,
     "buscar_material_rag": executar_buscar_material_rag,
 }
+
+TOOLS_DISPATCH = TOOLS_EXECUTORES

@@ -37,7 +37,7 @@ export default function ChatInput({ onSend, disabled = false }: ChatInputProps) 
   }, [send])
 
   return (
-    <div className="relative flex items-end gap-2 p-4 border-t border-border">
+    <div className="shrink-0 relative flex items-end gap-2 p-4 border-t border-border">
       {flashing && <div className="send-flash-bar" />}
       <Textarea
         ref={ref}

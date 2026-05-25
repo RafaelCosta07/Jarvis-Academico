@@ -1,84 +1,103 @@
-# MEMORY.md — Estado do Projeto
+# MEMORY.md — Estado do Projeto JARVIS Acadêmico
 
-## Fases / Progresso
+---
+
+## Visão Geral
+
+| Item | Detalhe |
+|---|---|
+| Stack Backend | FastAPI + Python 3.11 + SQLite + FAISS |
+| Stack Frontend | Next.js + Tailwind v4 + React |
+| Entrega atual | Trabalho 1 — Funcionalidades 3.1, 3.2, 3.3 |
+| Status geral | ✅ T1 Concluído |
+
+---
+
+## Progresso por Fase
+
+### Backend
 
 | Fase | Status | Descrição |
 |---|---|---|
 | Ingestão de Requisitos | ✅ Concluída | Leitura e validação do edital; stack definida (Next.js + Tailwind v4 / FastAPI + SQLite + FAISS) |
 | Especificação Técnica | ✅ Concluída | SPEC.md criado com arquitetura, contratos de Tool Calling e estrutura de diretórios |
-| Fase 1 — Criação da Estrutura de Diretórios | ✅ Concluída | 28 diretórios do SPEC.md Seção 3 criados fisicamente (frontend/, backend/, evaluation/) |
+| Fase 1 — Estrutura de Diretórios | ✅ Concluída | 28 diretórios do SPEC.md Seção 3 criados fisicamente (frontend/, backend/, evaluation/) |
 | Fase 2 — Fundação de Dados (SQLite + Models) | ✅ Concluída | requirements.txt, database.py (engine async + Base + get_db + create_all_tables), evento.py (Evento + TipoEvento, índice em data), tarefa.py (Tarefa + StatusTarefa, índices em disciplina/status/prazo), models/__init__.py |
-| Fase 2 — Code Review, Correções e Validação Funcional | ✅ Concluída | **Problemas encontrados:** ⚠️ `database.py` — exceção em `get_db` não logada; ⚠️ `database.py` — engine/session globais sem ponto de injeção para testes. **Correções aplicadas:** adicionado `logging.getLogger` + `logger.exception(...)` no `except`; extraídas funções `_make_engine` e `_make_session_factory`; adicionada `configure_for_testing(url)` para DIP/testabilidade. Nota: Seção 1.4 do SPEC.md **existe** (foi confirmado na Fase 3 — estava na seção correta do SPEC). **Validação funcional:** 4/4 verificações passaram (imports, driver aiosqlite, tabelas em memória, insert+select). **Observação de ambiente:** SQLAlchemy 2.0.25 incompatível com Python 3.14 — venv criado com Python 3.11.15. |
-| Fase 3 — Schemas Pydantic e Rotas CRUD | ✅ Concluída | **Arquivos criados:** `schemas/evento.py`, `schemas/tarefa.py`, `schemas/__init__.py`, `api/routes/agenda.py`, `api/routes/tasks.py`, `main.py`. |
-| Fase 3 — Code Review, Correções e Validação Funcional | ✅ Concluída | **Problemas encontrados:** ❌ `main.py:21` — instância FastAPI nomeada `jarvis` (incompatível com `uvicorn app.main:app`); ⚠️ `main.py:15` — `_lifespan` sem type hint de retorno; ⚠️ `routes/agenda.py` e `routes/tasks.py` — funções de rota sem try/except (gap entre instanciação ORM e sessão DB). **Correções aplicadas:** (1) renomeado `jarvis` → `app`; (2) adicionado `-> AsyncGenerator[None, None]` + import `collections.abc.AsyncGenerator`; (3) adicionado try/except com `logger.exception` em todas as 4 funções de rota. **Observação de ambiente:** venv só tinha SQLAlchemy+aiosqlite — instalado `fastapi==0.109.0 uvicorn==0.27.0 pydantic==2.5.3 pydantic-settings==2.1.0 python-multipart==0.0.6` via `uv pip install`. **Endpoints validados 8/8:** ✅ POST /api/agenda (201), ✅ GET /api/agenda, ✅ POST /api/tasks (201), ✅ GET /api/tasks, ✅ GET /api/tasks?status=pendente, ✅ GET /api/agenda?tipo=aula, ✅ CORS Origin=http://localhost:3000, ✅ GET /api/chat retorna 404. Código da Fase 3 revisado, corrigido e testado — pronto para a Fase 4. |
+| Fase 2 — Code Review e Validação | ✅ Concluída | Correções: logging adicionado ao get_db, funções _make_engine/_make_session_factory extraídas, configure_for_testing() adicionada para testabilidade. Validação: 4/4 verificações passaram. Observação: SQLAlchemy 2.0.25 incompatível com Python 3.14 — venv com Python 3.11.15. |
+| Fase 3 — Schemas Pydantic e Rotas CRUD | ✅ Concluída | Arquivos criados: schemas/evento.py, schemas/tarefa.py, schemas/__init__.py, api/routes/agenda.py, api/routes/tasks.py, main.py |
+| Fase 3 — Code Review e Validação | ✅ Concluída | Correções: FastAPI renomeada para `app` (compatível com uvicorn), type hint AsyncGenerator adicionado ao lifespan, try/except com logger.exception em todas as rotas. Endpoints validados 8/8. |
+| Fase 4 — Motor RAG (FAISS + LangChain) | ✅ Concluída | rag_service.py criado. Chunking: chunk_size=800, overlap=100. Embedding: paraphrase-multilingual-MiniLM-L12-v2 (384 dims, CPU). FAISS: IndexFlatL2, persistido em data/faiss_index.bin. Score: 1/(1+distancia_L2). |
+| Fase 4 — Code Review e Validação RAG | ✅ Concluída | Correções: try/except adicionado em construir_indice e recuperar_chunks, guarda self.index is None. Validações funcionais: 8/8 passaram com mock _MockST (DIP do construtor). Pacotes: faiss-cpu==1.7.4, langchain==0.1.5, PyPDF2==3.0.1, numpy==1.26.4. |
+| Fase 5 — Tool Calling e Orquestrador LLM | ✅ Concluída | 9 arquivos criados: logger.py, 5 tools (consultar_agenda, listar_tarefas, adicionar_tarefa, concluir_tarefa, buscar_material_rag), tools/__init__.py, orchestrator.py, api/routes/chat.py. Logger dual-output: JSONL + terminal colorido. Orquestrador: AsyncOpenAI, loop máx. 10 iterações. |
+| Fase 5 — Code Review e Validação (v2) | ✅ Concluída | Correções: imports lazy (TYPE_CHECKING) em buscar_material_rag.py e orchestrator.py, _NullRAGService (Null Object) como fallback, try/except em _obter_rag_service, tool_choice removido. Validações T1–T7: 6/7 passaram (T3 ambiente: vLLM rejeita tools sem --enable-auto-tool-choice). Servidor inicia limpo. |
 
-| Fase 4 — Motor RAG (FAISS + LangChain) | ✅ Concluída | **Arquivos criados:** `backend/.env` (variáveis da Seção 11.2 — DATABASE_URL ajustado para `sqlite+aiosqlite` conforme engine assíncrono), `backend/app/services/rag_service.py`. **Parâmetros de chunking:** chunk_size=800, overlap=100, separators=["\n\n","\n",". "," ",""]. **Modelo de embedding:** paraphrase-multilingual-MiniLM-L12-v2 (384 dims, CPU). **FAISS:** IndexFlatL2, persistido em `data/faiss_index.bin`; metadados em `data/processed/chunks_metadata.json`. **Design:** `RAGService` recebe `modelo_embedding`, `index_path` e `metadata_path` no construtor (DIP/testável); funções privadas `_ler_pdf`, `_ler_texto`, `_fazer_chunks`, `_gerar_embeddings`, `_normalizar_l2`, `_buscar_faiss`, `_salvar_indice`, `_salvar_metadata`, `_carregar_de_disco`; score calculado como `1/(1+distancia_L2)`; query normalizada L2 antes da busca. Fábrica `criar_rag_service()` lê variáveis de ambiente. Status: concluída — pronta para Code Review e validação funcional. |
+---
 
-| Fase 4 — Code Review, Correções e Validação Funcional do RAG | ✅ Concluída | **Problemas encontrados:** ⚠️ `rag_service.py:116` — `construir_indice` sem try/except (falhas de embedding/FAISS sem log); ⚠️ `rag_service.py:171` — `recuperar_chunks` sem guarda para `self.index is None` e sem try/except. **Correções aplicadas:** (1) `construir_indice` envolvido em try/except com `logger.error(..., exc_info=True)` + raise; (2) `recuperar_chunks` recebeu guarda `if self.index is None: return []` + try/except com `logger.error`. Ambas as funções permanecem ≤ 20 linhas após correção (13 e 19 linhas respectivamente). **Observação de ambiente:** `sentence-transformers` requer torch (pesado) — validação funcional executada com mock `_MockST` (SentenceTransformer substituível via DIP do construtor). Pacotes instalados no venv: `faiss-cpu==1.7.4`, `langchain==0.1.5`, `PyPDF2==3.0.1`, `numpy==1.26.4`. **Validações funcionais 8/8:** ✅ Import RAGService, ✅ carregar_indice dir vazia sem exceção, ✅ recuperar_chunks retorna list (len=0 dir vazia), ✅ construir_indice cria faiss_index.bin + chunks_metadata.json, ✅ chunks com campos corretos (conteudo/fonte/pagina/chunk_index/score), ✅ ordenação score decrescente, ✅ score em (0, 1.0], ✅ carregar do disco sem reconstrução, ✅ threshold filtra corretamente, ✅ índice não inicializado retorna [] sem exceção, ✅ .env com 10/10 variáveis. Código da Fase 4 revisado, corrigido e testado — pronto para a Fase 5. |
+### Frontend
 
-| Fase 5 — Tool Calling e Orquestrador LLM | ✅ Concluída | **Arquivos criados (9):** `app/utils/logger.py`, `app/tools/consultar_agenda.py`, `app/tools/listar_tarefas.py`, `app/tools/adicionar_tarefa.py`, `app/tools/concluir_tarefa.py`, `app/tools/buscar_material_rag.py`, `app/tools/__init__.py`, `app/services/orchestrator.py`, `app/api/routes/chat.py`. **Tools registradas:** consultar_agenda, listar_tarefas, adicionar_tarefa, concluir_tarefa, buscar_material_rag. **Endpoint adicionado:** `POST /api/chat`. **Logger dual-output:** `logs/tool_calls.jsonl` (JSON estruturado com timestamp/tool/input/output/execution_time_ms/sucesso/erro) + terminal colorido. **Orquestrador:** `AsyncOpenAI` (non-blocking), loop máx. 10 iterações, `_criar_cliente_llm()` lê GEMMA_BASE_URL/GEMMA_API_KEY do `.env`. **RAGService:** singleton lazy-load em `chat.py` via `_obter_rag_service()`, carrega índice de `data/documents` (env: `DOCUMENTS_DIR`). **Dependências a instalar:** `openai==1.10.0` (não estava no venv). Status: concluída — pronta para Code Review e validação funcional. |
+| Fase | Status | Descrição |
+|---|---|---|
+| Sprint 0 — Setup | ✅ Concluída | Next.js 16.2.6 com TypeScript + Tailwind v4 + ESLint + App Router. shadcn@latest: 9 componentes. Dependências: react-markdown, remark-gfm, lucide-react, date-fns. next.config.ts: devIndicators:false + output:standalone. globals.css: @theme inline com todos os tokens SPEC 2.5 + keyframes pulse-wave/blink/fade-slide-up. Fontes: Inter + JetBrains Mono. Build OK. |
+| Sprint 1 — Layout 3 Colunas | ✅ Concluída | AppShell.tsx (grid 18/64/18 → 20/60/20 → 22/56/22%), LeftSidebar.tsx, RightSidebar.tsx, page.tsx. Breakpoints: 1280/1440/1920px via @layer utilities. Build OK. |
+| Sprint 2 — Chat UI (Mock) | ✅ Concluída | 14 arquivos criados: types (chat.ts, api.ts), ui (NeuralPulse, GlassCard, GradientButton), chat (ChatMessageUser, ChatMessageAssistant, ChatMessage, ChatInput, ChatEmpty, ChatMessageList, ChatHeader, ChatWindow). globals.css: prose-jarvis, chat-header-pulse, chat-input-focused. Build OK. |
+| Sprint 3 — SSE + Typewriter | ✅ Concluída | lib/api.ts (postChat com AbortSignal), hooks/useSSE.ts (parseBuffer + readStream + AbortController), hooks/useChat.ts (typewriter 15ms/2chars, stopTypewriter, makeCallbacks). Mock removido. .env.local criado. Build OK. |
+| Sprint 4 — Sidebar Direita (Agenda + Tarefas) | ✅ Concluída | 9 arquivos criados: GradientBadge, AgendaEventItem, AgendaMiniCal, AgendaWidget, TaskItem (otimistic update + PATCH), TaskList, TaskWidget, TaskQuickAdd. RightSidebar atualizado. Build OK. |
+| Sprint 5 — Sidebar Esquerda + Conversas | ✅ Concluída | Arquivos criados: types/conversation.ts, lib/conversation-store.ts (DIP: ConversationStore + LocalStorageStore + factory), hooks/useConversations.ts. Editados: useChat.ts (onCreate/onComplete, loadMessages), LeftSidebar.tsx (ConversationItem, formatDate, avatar), page.tsx (store useMemo, useConversations + useChat integrados, activeIdRef). Build OK. |
+| Sprint 6 — Polish + Animações + Erros | ✅ Concluída | Novos: lib/toast.ts (emitter singleton), ui/ToastContainer.tsx, ui/ConfettiParticles.tsx. globals.css: +5 keyframes (confetti-fly, send-flash, shake, send-flash-bar, scrollbar). Editados 11 componentes: GlassCard (estado error), ChatHeader (Loader2 spin, ⚠ Erro), ChatInput (send-flash), mensagens (fade-slide-up), retry em erro, TaskItem (confetti + toast), hover lift em cards. Build OK, zero erros TypeScript. |
 
-| Fase 5 — Code Review, Correções e Validação Funcional (v2) | ✅ Concluída | **❌ encontrados (3):** (1) `buscar_material_rag.py` — `from app.services.rag_service import RAGService` no nível de módulo impede startup quando `sentence_transformers` não instalado; (2) `orchestrator.py` — mesmo problema com `from app.services.rag_service import RAGService`; (3) `chat.py` — `from app.services.rag_service import RAGService, criar_rag_service` no nível de módulo + sem fallback quando RAGService indisponível. **⚠️ encontrados (2):** (4) `orchestrator.py` — DIP: `_criar_cliente_llm()` sem injeção; (5) `chat.py` — `_obter_rag_service()` sem try/except. **Correções aplicadas:** (1) `buscar_material_rag.py` — `from __future__ import annotations` + `if TYPE_CHECKING: from ...RAGService`; (2) `orchestrator.py` — mesma correção; (3) `chat.py` — import lazy de `criar_rag_service` dentro de `_obter_rag_service()` + classe `_NullRAGService` (Null Object) para fallback quando sentence_transformers ausente; (4) `processar_mensagem` recebeu `cliente_llm: AsyncOpenAI \| None = None`; (5) try/except com `logger.error` em `_obter_rag_service`. **Correções de sessão anterior mantidas:** `logger.py` `->`, `main.py` `load_dotenv()`, `requirements.txt` httpx pin, `tool_choice` removido. **Validações T1–T7:** ✅ T1 logger 7-campos JSONL, ✅ T2 TOOLS_REGISTRY 5 tools formato OpenAI, ⚠️ T3 AMBIENTE (vLLM endpoint rejeita tools sem --enable-auto-tool-choice), ✅ T4-mock agent loop 2 iterações (consultar_agenda despachada + resultado appendado via DIP), ✅ T5 GET /api/chat → 405, ✅ T6 JSONL 7 campos após execução, ✅ T7 zero chamadas OpenAI em routes/tools/models. **Servidor inicia limpo** após correções de lazy import. Código da Fase 5 revisado, corrigido e testado — pronto para a Fase 6. |
+---
 
-| Fase 6 — Sprint 0 (Setup Completo) | ✅ Concluída | Next.js 16.2.6 criado com create-next-app (TS + Tailwind v4 + ESLint + App Router + src-dir). shadcn@latest init + 9 componentes (button, card, input, textarea, badge, avatar, scroll-area, separator, tooltip). Dependências extras: react-markdown, remark-gfm, lucide-react, date-fns. next.config.ts: devIndicators:false + output:standalone. globals.css: @import tailwindcss + @theme inline com todos os tokens SPEC 2.5 (background, surface, foreground, primary-start/end/glow, academic-yellow/green/red/blue, glass-bg/border, font-sans/mono, radius-sm→2xl, shadow-neural, glass-blur) + keyframes pulse-wave/blink/fade-slide-up. layout.tsx: Inter + JetBrains_Mono via next/font/google. page.tsx: placeholder com gradiente JARVIS. Validações: npm run build OK (TypeScript sem erros), npm run dev ready em 376ms. |
+### Correções e Fixes
 
-| Fase 6 — Sprint 1 (Layout 3 Colunas) | ✅ Concluída | AppShell.tsx (shell-grid: 18/64/18 → 20/60/20 → 22/56/22), LeftSidebar.tsx (surface + gradiente JARVIS), RightSidebar.tsx (surface + placeholder), page.tsx atualizado. Grid responsivo 3 breakpoints (1280/1440/1920px) via @layer utilities no globals.css. Build OK, TypeScript sem erros. |
-
-| Fase 6 — Sprint 2 (Chat UI Mock) | ✅ Concluída | 14 arquivos criados: types/chat.ts, types/api.ts, ui/NeuralPulse, ui/GlassCard, ui/GradientButton, chat/ChatMessageUser (Neural Bubble), chat/ChatMessageAssistant (GlassCard + ReactMarkdown + cursor blink), chat/ChatMessage, chat/ChatInput (auto-resize, focus-glow, Enter/Shift+Enter), chat/ChatEmpty (3 sugestões), chat/ChatMessageList (auto-scroll), chat/ChatHeader (pulse ativo), chat/ChatWindow. globals.css: prose-jarvis, chat-header-pulse, chat-input-focused. Build OK, TypeScript sem erros. |
-
-| Fase 6 — Sprint 3 (SSE + Typewriter) | ✅ Concluída | lib/api.ts (postChat com AbortSignal), hooks/useSSE.ts (connectSSE: parseBuffer + readStream + AbortController), hooks/useChat.ts (typewriter 15ms/2chars, stopTypewriter, makeCallbacks, cleanup no unmount). ChatMessageList: filtra placeholder vazio durante loading. page.tsx: mock removido, useChat integrado. .env.local criado. Build OK, TypeScript sem erros. |
-
-| Fase 6 — Sprint 4 (Sidebar Direita — Agenda + Tarefas) | ✅ Concluída | **Arquivos criados (9):** `lib/api.ts` (+getAgendaHoje, getTarefas, concluirTarefa, criarTarefa), `ui/GradientBadge.tsx` (mapa de variantes aula/prova/prazo/outro/pendente/concluida), `agenda/AgendaEventItem.tsx` (border-left colorida por tipo), `agenda/AgendaMiniCal.tsx` (calendário mensal com dias com evento destacados, hoje em primary-start), `agenda/AgendaWidget.tsx` (fetch getAgendaHoje no mount), `tasks/TaskItem.tsx` (Checkbox + update otimista + PATCH concluir, prazo vencido em academic-red), `tasks/TaskList.tsx` (ordenação: pendentes primeiro, depois por prazo ASC), `tasks/TaskWidget.tsx` (fetch getTarefas, handleConcluida, handleAdded, contador de pendentes), `tasks/TaskQuickAdd.tsx` (Input + Enter → criarTarefa). **Atualizado:** `layout/RightSidebar.tsx` (AgendaWidget + Separator + TaskWidget). Build OK, TypeScript sem erros. |
-
-| Fase 6 — Sprint 5 (Sidebar Esquerda + Conversas) | ✅ Concluída | **Arquivos criados (3):** `types/conversation.ts` (Conversation interface com Message[]/Date), `lib/conversation-store.ts` (DIP: ConversationStore interface + LocalStorageStore + factory; parseConversation/parseMessage restitui Date de JSON; try/catch com fallback em memória), `hooks/useConversations.ts` (recebe ConversationStore por param; createConversation retorna id; titleFromMessages 40 chars; refresh via store.getAll). **Editados (3):** `hooks/useChat.ts` (UseChatOptions: onCreate/onComplete; messagesRef sincronizado em updateLastContent; sendMessage chama onCreate se messages vazio; clearMessages chama onCreate; loadMessages novo), `components/layout/LeftSidebar.tsx` (sub-componente ConversationItem com X no hover; formatDate isToday/isYesterday/formatDistanceToNow; MATERIAIS hardcoded; footer com Avatar), `app/page.tsx` (store via useMemo; useConversations + useChat wired; activeIdRef para onComplete estável; useEffect[activeId] carrega mensagens da conversa selecionada). **Correção:** `as unknown as Message` para satisfazer TypeScript strict. Build OK, zero erros. |
-
-| Fase 6 — Sprint 6 (Polish + Animações + Erros) | ✅ Concluída | **Novos arquivos (3):** `lib/toast.ts` (emitter singleton: toast/subscribeToasts), `ui/ToastContainer.tsx` (bubbles posicionados fixed bottom-right, auto-dismiss), `ui/ConfettiParticles.tsx` (6 partículas via rotate+translateX CSS). **globals.css (+5 keyframes/classes):** confetti-fly, send-flash, shake, send-flash-bar, scroll-area-chat scrollbar. **Editados (11):** `ui/GlassCard.tsx` (prop error: borda academic-red + shake), `chat/ChatHeader.tsx` (Loader2 animate-spin no loading, ⚠ Erro no error), `chat/ChatInput.tsx` (send-flash-bar flashing state), `chat/ChatMessageUser.tsx` (fade-slide-up), `chat/ChatMessageAssistant.tsx` (fade-slide-up + isError/onRetry → botão retry), `chat/ChatMessage.tsx` (isError/onRetry propagados), `chat/ChatMessageList.tsx` (plain div overflow-y-auto + smart scroll isAtBottomRef + banner >100 msgs + onRetry), `chat/ChatWindow.tsx` (onRetry prop), `tasks/TaskItem.tsx` (ConfettiParticles + toast success/error + hover-lift), `tasks/TaskQuickAdd.tsx` (toast add/error), `agenda/AgendaEventItem.tsx` (hover lift). `hooks/useChat.ts` (retry function). `app/page.tsx` (handleDelete+toast, retry→ChatWindow). `app/layout.tsx` (ToastContainer). Build OK, zero erros TypeScript. |
-
-| Fase 6 — Frontend Next.js | ✅ Concluída | Sprints 0–6 implementados. Chat SSE+typewriter, agenda/tarefas via API REST, conversas em localStorage (DIP), 5 micro-interações SPEC, toast system, smart scroll, retry no erro. |
-
-| Fix-A — Backend SSE + Estrutura | ✅ Concluída | **Estado verificado:** chat.py já retornava StreamingResponse SSE correto (token+done); evento.py já serializava HH:MM; agenda_service.py, task_service.py, config.py, schemas/chat.py, tools/base.py, services/llm_client.py todos existiam. **Gaps corrigidos:** (1) `agenda_service.listar_eventos` e `criar_evento` — adicionado try/except + logger.exception (SPEC 1.4); (2) `task_service.listar_tarefas`, `criar_tarefa`, `concluir_tarefa` — mesma correção + `db.flush()` em vez de `db.commit()` para consistência; (3) `routes/tasks.py` — adicionado `except HTTPException: raise` antes do `except Exception` no endpoint `concluir_tarefa_endpoint` para evitar logar 404/409 como erro de servidor. **Validações:** ✅ GET /api/agenda → hora_inicio=09:30 (HH:MM), ✅ POST /api/tasks → 201 pendente, ✅ PATCH /tasks/{id}/concluir → 200 concluida, ✅ PATCH tarefa já concluída → 409 (sem log falso), ✅ PATCH id inexistente → 404, ✅ POST /api/chat → ContentType: text/event-stream (LLM inacessível em ambiente de dev → retorna error+done, protocolo correto). |
-
-| Fix-B — Frontend Bugs | ✅ Concluída | **Bug 1 (race condition SSE):** `useEffect([activeId])` em `page.tsx` disparava ao `createConversation()` ser chamado dentro de `sendMessage`, cancelando o SSE em voo. Corrigido com `isSystemActiveIdChange = useRef(false)` — flag setado antes de `createConversation()`, checado e zerado no `useEffect`. **Bug 2 (conversa duplicada):** `if (messages.length === 0)` em `useChat.ts` criava segunda conversa quando `activeId` já existia mas `messages` estava vazio. Corrigido para `if (!optionsRef.current.activeId)`; `activeId` adicionado a `UseChatOptions`. **Bug 3 (rollback otimistic update):** `TaskItem.tsx` não revertia estado ao falhar o PATCH. Corrigido: `onRevert: (id) => void` adicionado à cadeia `TaskItem → TaskList → TaskWidget`; `handleRevert` seta `status: 'pendente'` no estado pai. **Cosmético:** `postChat` em `api.ts` envia `{ messages, stream: true }` conforme SPEC 2.3. **npm run build:** limpo, zero erros TypeScript. **npx tsc --noEmit:** zero erros. |
-
-| Validação Final T1 | ✅ Concluída | **Backend (2026-05-24):** ✅ SSE formato correto (`data: {"type":"error/token/done"}`; LLM offline em dev → error+done, protocolo OK). ✅ POST /api/agenda → hora_inicio=09:00 (HH:MM, sem segundos). ✅ GET /api/agenda?data=2026-05-24 → evento retornado. ✅ POST /api/tasks → 201 pendente. ✅ PATCH /api/tasks/{id}/concluir → status=concluida, concluida_em preenchido. ✅ PATCH tarefa já concluída → 409 Conflict. ✅ Todos os 6 arquivos estruturais presentes (config.py, schemas/chat.py, tools/base.py, agenda_service.py, task_service.py, llm_client.py). **Frontend:** ✅ npm run build limpo. ✅ npx tsc --noEmit zero erros. **RAG:** data/documents/ vazia — sem documentos para indexar. Código correto (RAGService + buscar_material_rag funcionais), mas funcionalidade 3.1 não pode ser validada end-to-end sem documentos PDF/TXT no diretório. |
+| Fix | Status | Descrição |
+|---|---|---|
+| Fix-A — Backend SSE + Estrutura | ✅ Concluída | Estado verificado: SSE já correto, hora HH:MM já correto, todos os services e arquivos estruturais já existiam. Correções: try/except + logger.exception nos services, db.flush() em task_service, except HTTPException: raise antes do except Exception no endpoint concluir_tarefa. Validações: 6/6 passaram. |
+| Fix-B — Frontend Bugs | ✅ Concluída | Bug 1: race condition SSE — corrigido com isSystemActiveIdChange ref em page.tsx. Bug 2: conversa duplicada — condição trocada de messages.length === 0 para !activeId em useChat.ts. Bug 3: rollback otimistic update ausente — onRevert adicionado à cadeia TaskItem → TaskList → TaskWidget. Cosmético: stream:true adicionado em postChat. Build OK, zero erros. |
+| Fix-1 — Hydration LeftSidebar | ✅ Concluída | Causa: useState lazy initializer chamava localStorage.getItem() no SSR, retornando [] no servidor e conversas reais no cliente. Correção: useState([]) + useEffect para diferir leitura ao mount. Build OK. |
+| Fix-2 — Backend SSE + Estrutura (revalidação) | ✅ Concluída | Estado verificado: todos os itens já corretos. Única correção: import de RAGService movido para TYPE_CHECKING em tools/base.py (regra lazy import). Validações: 7/7 passaram. |
+| Validação Final T1 | ✅ Concluída | Backend: SSE OK, hora HH:MM OK, CRUD agenda/tasks OK, 6 arquivos estruturais presentes. Frontend: build OK, tsc --noEmit OK. Observação: data/documents/ vazia — RAG funcional no código, validação end-to-end requer documentos PDF/TXT. |
 
 ---
 
 ## Estado Final — Trabalho 1 (T1)
 
-### Checklist de Entrega T1
+### Checklist de Entrega
 
-Funcionalidades obrigatórias:
-- [x] 3.1 — Consulta a materiais de estudo (RAG): `buscar_material_rag` registrada, RAGService funcional. Validação end-to-end requer documentos em `backend/data/documents/`.
-- [x] 3.2 — Agenda acadêmica: GET/POST /api/agenda + AgendaWidget no frontend. Hora serializada em HH:MM.
-- [x] 3.3 — Lista de tarefas: GET/POST/PATCH /api/tasks + TaskWidget no frontend. Otimistic update com rollback.
+**Funcionalidades obrigatórias:**
+- [x] 3.1 — RAG: `buscar_material_rag` registrada, RAGService funcional. Validação end-to-end requer documentos em `backend/data/documents/`
+- [x] 3.2 — Agenda acadêmica: GET/POST /api/agenda + AgendaWidget. Hora serializada em HH:MM
+- [x] 3.3 — Lista de tarefas: GET/POST/PATCH /api/tasks + TaskWidget. Otimistic update com rollback
 
-Interface:
-- [x] Chat SSE funcional (frontend ↔ backend): protocolo token/done/error correto
+**Interface:**
+- [x] Chat SSE funcional — protocolo token/done/error correto
 - [x] Layout 3 colunas (LeftSidebar + Chat + RightSidebar)
-- [x] Conversas persistidas em localStorage (DIP: ConversationStore interface)
+- [x] Conversas persistidas em localStorage com DIP (ConversationStore interface)
 - [x] Typewriter simulado no frontend (15ms/2chars)
 
-Qualidade de código:
+**Qualidade de código:**
 - [x] Zero `any` no TypeScript
-- [x] npm run build sem erros
-- [x] npx tsc --noEmit sem erros
+- [x] `npm run build` sem erros
+- [x] `npx tsc --noEmit` sem erros
 - [x] Estrutura de arquivos conforme SPEC.md seção 3
 - [x] Clean Code + SOLID (SPEC seção 1.4)
 
-### Bugs corrigidos nesta fase
-1. Race condition SSE — `page.tsx` useEffect cancelava SSE quando `activeId` mudava durante `sendMessage`
+### Bugs corrigidos
+
+1. Race condition SSE — `page.tsx` cancelava SSE quando `activeId` mudava durante `sendMessage`
 2. Conversa duplicada — `useChat.ts` criava segunda conversa quando `activeId` já existia com messages vazio
 3. Rollback otimistic update ausente — `TaskItem.tsx` não revertia tarefa ao falhar PATCH
-4. Serialização hora_inicio/fim `HH:MM:SS` → `HH:MM` (Fix-A)
-5. HTTPException 404/409 logadas como erro de servidor (Fix-A)
+4. Serialização `HH:MM:SS` → `HH:MM` em hora_inicio/hora_fim
+5. HTTPException 404/409 logadas incorretamente como erro de servidor
 
 ### Observações para T2
-- Streaming real (token a token) deve ser implementado no orquestrador — atualmente emite um único evento token com a resposta completa
-- Adicionar documentos PDF/TXT em `backend/data/documents/` e reindexar via `RAGService.construir_indice()` antes de validar funcionalidade 3.1
-- `ConversationStore` usa DIP — pronto para `ApiStore` no T2 sem alterar hooks
-- Funcionalidades 3.4, exercícios e active recall pendentes para T2
+
+- Streaming real (token a token) a implementar no orquestrador — atualmente emite um único evento token com a resposta completa
+- Adicionar documentos em `backend/data/documents/` e chamar `RAGService.construir_indice()` para validar funcionalidade 3.1 end-to-end
+- `ConversationStore` com DIP — pronto para `ApiStore` no T2 sem alterar hooks
+- Funcionalidades 3.4, exercícios, active recall e avaliação do sistema pendentes para T2
+
+---
 
 ## Próximo Passo
 
-Trabalho 1 encerrado. Próximo: T2 (Funcionalidade 3.4 + melhorias de aprendizado + avaliação + análise de erros).
+Trabalho 1 encerrado. Próximo: **T2** — Funcionalidade 3.4 + melhorias de aprendizado + avaliação do sistema + análise de erros.

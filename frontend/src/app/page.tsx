@@ -23,12 +23,17 @@ export default function Home() {
     createConversation()
   }, [createConversation])
 
+  type WinWithRefresh = Window & { recarregarTarefas?: () => void; recarregarAgenda?: () => void }
+
   const { messages, status, sendMessage, clearMessages, loadMessages, retry } = useChat({
     onCreate: handleCreate,
     activeId,
     onComplete: (msgs) => {
       const id = activeIdRef.current
       if (id) updateConversation(id, msgs)
+      const win = window as WinWithRefresh
+      win.recarregarTarefas?.()
+      win.recarregarAgenda?.()
     },
   })
 

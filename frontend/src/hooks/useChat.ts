@@ -7,6 +7,8 @@ import { generateId } from '@/lib/utils'
 const TYPEWRITER_SPEED = 15
 const CHARS_PER_TICK = 2
 
+type WinWidgets = Window & { recarregarTarefas?: () => void; recarregarAgenda?: () => void }
+
 export interface UseChatOptions {
   onCreate?: () => void
   onComplete?: (messages: Message[]) => void
@@ -54,6 +56,9 @@ export function useChat(options: UseChatOptions = {}) {
       setStatus('streaming')
       runTypewriter(content, () => {
         optionsRef.current.onComplete?.(messagesRef.current)
+        const w = window as WinWidgets
+        w.recarregarTarefas?.()
+        w.recarregarAgenda?.()
         setStatus('idle')
       })
     },

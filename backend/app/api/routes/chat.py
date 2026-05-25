@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 from collections.abc import AsyncGenerator
+from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 from fastapi import APIRouter, Depends
@@ -32,6 +34,47 @@ class _NullRAGService:
         return []
 
 
+def _documentos_atuais(docs_dir: Path) -> list[str]:
+    if not docs_dir.exists():
+        return []
+    return sorted(f for f in os.listdir(docs_dir) if f.lower().endswith(('.pdf', '.txt', '.md')))
+
+
+def _fontes_indexadas(metadata_path: Path) -> list[str]:
+    if not metadata_path.exists():
+        return []
+    with open(metadata_path, encoding='utf-8') as f:
+        meta: list[dict[str, str]] = json.load(f)
+    return sorted({c['fonte'] for c in meta})
+
+
+def _indice_desatualizado(index_path: Path, metadata_path: Path, docs_dir: Path) -> bool:
+    if not index_path.exists():
+        return True
+    return _fontes_indexadas(metadata_path) != _documentos_atuais(docs_dir)
+
+
+def inicializar_rag_startup() -> None:
+    global _rag_service_singleton
+    index_path = Path(settings.faiss_index_path)
+    metadata_path = index_path.parent / 'processed' / 'chunks_metadata.json'
+    docs_dir = Path(settings.documents_dir)
+    try:
+        from app.services.rag_service import criar_rag_service
+        rag = criar_rag_service()
+        if _indice_desatualizado(index_path, metadata_path, docs_dir):
+            n = len(_documentos_atuais(docs_dir))
+            logger.info("Índice FAISS desatualizado — reconstruindo com %d documentos...", n)
+            rag.construir_indice(str(docs_dir))
+        else:
+            rag.carregar_indice(str(docs_dir))
+        _rag_service_singleton = rag
+        logger.info("RAGService pronto.")
+    except Exception:
+        logger.exception("Falha ao inicializar RAG no startup — RAG desativado.")
+        _rag_service_singleton = _NullRAGService()  # type: ignore[assignment]
+
+
 def _obter_rag_service() -> RAGService:
     global _rag_service_singleton
     if _rag_service_singleton is None:
@@ -39,9 +82,10 @@ def _obter_rag_service() -> RAGService:
             from app.services.rag_service import criar_rag_service  # lazy — evita import de torch no startup
             servico = criar_rag_service()
             servico.carregar_indice(settings.documents_dir)
+            logger.info("RAGService inicializado com índice FAISS.")
             _rag_service_singleton = servico
         except Exception:
-            logger.warning("RAGService indisponível — usando serviço nulo (sentence_transformers ausente?)")
+            logger.exception("RAGService falhou ao inicializar — RAG desativado, busca retornará vazio.")
             _rag_service_singleton = _NullRAGService()  # type: ignore[assignment]
     return _rag_service_singleton
 

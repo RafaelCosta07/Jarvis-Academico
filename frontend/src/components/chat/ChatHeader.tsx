@@ -22,7 +22,7 @@ function StatusBadge({ status }: { status: ChatStatus }) {
 export default function ChatHeader({ title, status }: ChatHeaderProps) {
   const isActive = status === 'loading' || status === 'streaming'
   return (
-    <div className={`flex items-center justify-between px-6 py-4 border-b border-border ${isActive ? 'chat-header-pulse' : ''}`}>
+    <div className={`shrink-0 flex items-center justify-between px-6 py-4 border-b border-border ${isActive ? 'chat-header-pulse' : ''}`}>
       <h2 className="text-sm font-semibold text-foreground truncate">{title}</h2>
       <StatusBadge status={status} />
     </div>

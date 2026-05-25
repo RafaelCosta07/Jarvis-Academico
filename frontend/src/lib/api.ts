@@ -2,6 +2,21 @@ import type { Evento, Tarefa } from '@/types/api'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
+export interface Material {
+  nome: string
+  titulo: string
+}
+
+export async function getMateriais(): Promise<Material[]> {
+  const res = await fetch(`${API_URL}/api/materiais`)
+  if (!res.ok) throw new Error('Erro ao carregar materiais')
+  return res.json() as Promise<Material[]>
+}
+
+export function getUrlMaterial(nome: string): string {
+  return `${API_URL}/api/materiais/${encodeURIComponent(nome)}`
+}
+
 export async function postChat(
   messages: Array<{ role: string; content: string }>,
   signal?: AbortSignal,
@@ -14,12 +29,20 @@ export async function postChat(
   })
 }
 
-export async function getAgendaHoje(): Promise<Evento[]> {
-  const data = new Date().toISOString().split('T')[0]
+export async function getEventosPorData(data: string): Promise<Evento[]> {
   const res = await fetch(`${API_URL}/api/agenda?data=${data}`)
   if (!res.ok) throw new Error(`Erro ao buscar agenda: ${res.status}`)
   return res.json() as Promise<Evento[]>
 }
+
+export async function getTodosEventos(): Promise<Evento[]> {
+  const res = await fetch(`${API_URL}/api/agenda`)
+  if (!res.ok) throw new Error(`Erro ao buscar agenda: ${res.status}`)
+  return res.json() as Promise<Evento[]>
+}
+
+export const getAgendaHoje = () =>
+  getEventosPorData(new Date().toISOString().split('T')[0])
 
 export async function getTarefas(status?: 'pendente' | 'concluida'): Promise<Tarefa[]> {
   const url = status ? `${API_URL}/api/tasks?status=${status}` : `${API_URL}/api/tasks`
@@ -46,4 +69,14 @@ export async function criarTarefa(
   })
   if (!res.ok) throw new Error(`Erro ao criar tarefa: ${res.status}`)
   return res.json() as Promise<Tarefa>
+}
+
+export async function criarEvento(payload: Omit<Evento, 'id'>): Promise<Evento> {
+  const res = await fetch(`${API_URL}/api/agenda`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  })
+  if (!res.ok) throw new Error(`Erro ao criar evento: ${res.status}`)
+  return res.json() as Promise<Evento>
 }

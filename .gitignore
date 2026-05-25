@@ -57,3 +57,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .vercel
+
+CLAUD.md
+
+CLAUDE.md

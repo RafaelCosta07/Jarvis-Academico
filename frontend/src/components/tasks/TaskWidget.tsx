@@ -5,20 +5,30 @@ import type { Tarefa } from '@/types/api'
 import TaskList from './TaskList'
 import TaskQuickAdd from './TaskQuickAdd'
 
+type Win = Window & { recarregarTarefas?: () => void }
+
 export default function TaskWidget() {
   const [tarefas, setTarefas] = useState<Tarefa[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
+  const carregarTarefas = useCallback(() => {
     getTarefas()
-      .then(setTarefas)
-      .catch((err: unknown) => {
-        console.error('TaskWidget:', err)
-        setError('Erro ao carregar tarefas.')
-      })
+      .then(data => { setTarefas(data); setError(null) })
+      .catch((err: unknown) => { console.error('TaskWidget:', err); setError('Erro ao carregar tarefas.') })
       .finally(() => setLoading(false))
   }, [])
+
+  useEffect(() => {
+    carregarTarefas()
+    const id = setInterval(carregarTarefas, 30_000)
+    return () => clearInterval(id)
+  }, [carregarTarefas])
+
+  useEffect(() => {
+    (window as Win).recarregarTarefas = carregarTarefas
+    return () => { delete (window as Win).recarregarTarefas }
+  }, [carregarTarefas])
 
   const handleConcluida = useCallback((id: string) => {
     setTarefas(prev => prev.map(t => t.id === id ? { ...t, status: 'concluida' as const } : t))

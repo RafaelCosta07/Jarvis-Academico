@@ -72,6 +72,8 @@ body {
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
   }
 }
 
@@ -95,6 +97,7 @@ body {
   .shell-grid {
     display: grid;
     grid-template-columns: 18% 64% 18%;
+    grid-template-rows: 100%;
   }
 }
 
@@ -164,9 +167,15 @@ body {
   40%, 80% { transform: translateX(3px); }
 }
 
-/* ── Scroll da lista de chat ── */
-.scroll-area-chat { scrollbar-width: thin; scrollbar-color: var(--color-border) transparent; }
-.scroll-area-chat::-webkit-scrollbar { width: 5px; }
-.scroll-area-chat::-webkit-scrollbar-track { background: transparent; }
-.scroll-area-chat::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 9999px; }
-.scroll-area-chat::-webkit-scrollbar-thumb:hover { background: var(--color-muted-foreground); }
+/* ── Scrollbar global — webkit ── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: transparent; border-radius: 99px; transition: background 0.2s ease; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-primary-end); }
+
+/* ── Scroll fade — thumb aparece ao scrollar via JS, some após 1.5s ── */
+.scroll-fade { scrollbar-color: transparent transparent; }
+.scroll-fade::-webkit-scrollbar-thumb { background: transparent; }
+.scroll-fade.scrolling { scrollbar-color: var(--color-muted-foreground) transparent; }
+.scroll-fade.scrolling::-webkit-scrollbar-thumb { background: var(--color-muted-foreground); }
+.scroll-fade.scrolling::-webkit-scrollbar-thumb:hover { background: var(--color-primary-end); }
