@@ -1,6 +1,7 @@
 'use client'
 import { useMemo } from 'react'
 import { getDaysInMonth, getDay, startOfMonth } from 'date-fns'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import type { Evento } from '@/types/api'
 
 const WEEK_DAYS = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
@@ -34,18 +35,18 @@ function DiaCalendario({ dia, dataStr, isHoje, isSelecionado, temEvento, isPast,
       onClick={() => !isPast && onClick(dataStr)}
       disabled={isPast}
       className={[
-        'w-7 h-7 text-[11px] rounded-full flex items-center justify-center mx-auto',
+        'w-7 h-7 text-[11px] tabular-nums rounded-full flex items-center justify-center mx-auto',
         'transition-all duration-150 relative',
-        isPast ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer hover:bg-surface',
-        isHoje && !isSelecionado ? 'ring-1 ring-[var(--color-primary-start)]' : '',
+        isPast ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer hover:bg-surface-2',
+        isHoje && !isSelecionado ? 'ring-1 ring-primary' : '',
         isSelecionado
-          ? 'bg-gradient-to-br from-[var(--color-primary-start)] to-[var(--color-primary-end)] text-white font-semibold'
+          ? 'bg-primary text-white font-semibold'
           : 'text-foreground',
       ].join(' ')}
     >
       {dia}
       {temEvento && !isSelecionado && (
-        <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[var(--color-primary-start)]" />
+        <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary" />
       )}
     </button>
   )
@@ -98,9 +99,9 @@ export default function AgendaMiniCal({ ano, mes, eventos, dataSelecionada, onDa
   return (
     <div className="px-1">
       <div className="flex items-center justify-between mb-2">
-        <button onClick={onMesAnterior} disabled={!podeMesAnterior} aria-label="Mês anterior" className="text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors px-1 text-base">‹</button>
-        <span className="text-xs text-muted-foreground capitalize">{MESES_PT[mes]} {ano}</span>
-        <button onClick={onMesProximo} aria-label="Próximo mês" className="text-muted-foreground hover:text-foreground transition-colors px-1 text-base">›</button>
+        <button onClick={onMesAnterior} disabled={!podeMesAnterior} aria-label="Mês anterior" className="text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors p-1"><ChevronLeft className="w-4 h-4" aria-hidden="true" /></button>
+        <span className="text-xs font-medium text-foreground capitalize">{MESES_PT[mes]} {ano}</span>
+        <button onClick={onMesProximo} aria-label="Próximo mês" className="text-muted-foreground hover:text-foreground transition-colors p-1"><ChevronRight className="w-4 h-4" aria-hidden="true" /></button>
       </div>
       <div className="grid grid-cols-7 gap-0.5 text-center">
         {WEEK_DAYS.map((d, i) => <span key={i} className="text-[10px] text-muted-foreground font-medium pb-1">{d}</span>)}

@@ -12,10 +12,10 @@ export default function ChatMessageUser({ content, timestamp }: ChatMessageUserP
       style={{ animation: 'fade-slide-up 0.3s ease-out forwards' }}
     >
       <div
-        className="px-4 py-3 text-sm text-white"
+        className="px-4 py-3 text-sm leading-relaxed text-white"
         style={{
-          background: 'linear-gradient(135deg, var(--color-primary-start), var(--color-primary-end))',
-          borderRadius: 'var(--radius-lg)',
+          background: 'var(--color-primary)',
+          borderRadius: 'var(--radius-lg) var(--radius-lg) var(--radius-sm) var(--radius-lg)',
         }}
       >
         {content}

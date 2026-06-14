@@ -1,6 +1,7 @@
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { format } from 'date-fns'
+import { AlertTriangle, RotateCcw } from 'lucide-react'
 import GlassCard from '@/components/ui/GlassCard'
 
 interface ChatMessageAssistantProps {
@@ -19,18 +20,20 @@ export default function ChatMessageAssistant({ content, timestamp, isStreaming, 
     >
       <GlassCard error={isError}>
         {isError && (
-          <p className="flex items-center gap-1 text-xs text-academic-red mb-2">⚠ Erro na resposta</p>
+          <p className="flex items-center gap-1.5 text-xs text-academic-red mb-2">
+            <AlertTriangle className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />Erro na resposta
+          </p>
         )}
-        <div className="prose-jarvis text-sm text-foreground">
+        <div className="prose-jarvis max-w-[66ch] text-sm text-foreground">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
         </div>
         {isStreaming && <span style={{ animation: 'blink 1s step-end infinite' }}>▌</span>}
         {isError && onRetry && (
           <button
             onClick={onRetry}
-            className="mt-2 text-xs text-primary-start hover:underline transition-colors cursor-pointer"
+            className="mt-2 flex items-center gap-1.5 text-xs text-primary hover:underline transition-colors cursor-pointer"
           >
-            ↺ Tentar novamente
+            <RotateCcw className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />Tentar novamente
           </button>
         )}
       </GlassCard>

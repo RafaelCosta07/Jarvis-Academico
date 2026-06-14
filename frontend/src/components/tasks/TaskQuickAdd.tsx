@@ -43,7 +43,7 @@ export default function TaskQuickAdd({ onAdded }: TaskQuickAddProps) {
         onChange={e => setValue(e.target.value)}
         onKeyDown={onKeyDown}
         disabled={loading}
-        className="flex-1 h-8 text-xs bg-surface border-glass-border placeholder:text-muted-foreground"
+        className="flex-1 h-8 text-xs bg-surface-2 border-hairline placeholder:text-muted-foreground"
       />
       <GradientButton
         onClick={() => void submit()}

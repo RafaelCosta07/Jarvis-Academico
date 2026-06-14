@@ -230,209 +230,179 @@ Cada chamada de ferramenta gera uma linha no arquivo `logs/tool_calls.jsonl`:
 ```
 
 ### 2.5 Design System Frontend
-
-**Conceito Visual:** "Academic Neural Interface" — Interface que combina design científico/acadêmico com estética neural moderna.
-
+ 
+**Conceito Visual:** "Academic Editorial" — Dark neutro em camadas, tipografia com hierarquia forte, acento violeta usado com economia. Referência: Linear / Vercel / Things. Identidade JARVIS preservada pela família violeta, sem "neon em tudo".
+ 
+> **Nota de implementação:** Esta seção substitui a especificação anterior ("Academic Neural Interface"). O redesign foi decidido em 14/06/2026 para elevar o acabamento visual e evitar estética genérica de "gerado por IA". Nenhuma funcionalidade foi alterada.
+ 
+---
+ 
 #### Tokens de Design
-
-**Paleta de Cores — Neural Academy**
-
-Base (Dark Mode):
-- `--background`: hsl(240 10% 3.9%) — Quase preto com leve azul
-- `--surface`: hsl(240 5% 6%) — Cards/superfícies
-- `--foreground`: hsl(0 0% 98%) — Texto principal
-- `--muted-foreground`: hsl(240 5% 64.9%) — Texto secundário
-
-Accent (Gradiente Inteligente):
-- `--primary-start`: hsl(250 95% 65%) — Roxo vibrante (início do gradiente)
-- `--primary-end`: hsl(217 91% 60%) — Azul elétrico (fim do gradiente)
-- `--primary-glow`: hsla(250 95% 65% / 0.15) — Brilho sutil para efeitos
-
-Secundário (Tons Acadêmicos):
-- `--academic-yellow`: hsl(45 93% 58%) — Marca-texto/destaque
-- `--academic-green`: hsl(142 76% 36%) — Status concluído
-- `--academic-red`: hsl(0 72% 51%) — Urgente/erro
-- `--academic-blue`: hsl(199 89% 48%) — Informacional
-
-Glassmorphism:
-- `--glass-bg`: hsla(240 10% 15% / 0.6) — Fundo glassmorphism
-- `--glass-border`: hsla(0 0% 100% / 0.1) — Borda glass
-- `--glass-blur`: 12px — Intensidade do blur
-
-Bordas e Inputs:
-- `--border`: hsl(240 3.7% 15.9%) — Bordas padrão
-- `--input`: hsl(240 3.7% 15.9%) — Input backgrounds
-- `--ring`: hsl(250 95% 65%) — Focus ring
-
-**Tipografia — Sistema Dual**
-
+ 
+**Paleta de Cores — Dark em Camadas**
+ 
+Superfícies (elevação por lightness, não por blur):
+- `--bg`: hsl(240 8% 4%) — canvas principal
+- `--surface-1`: hsl(240 6% 7%) — cards, sidebars
+- `--surface-2`: hsl(240 6% 10%) — inputs, hover, estados levantados
+- `--hairline`: hsl(0 0% 100% / 0.06) — borda padrão
+- `--border-strong`: hsl(0 0% 100% / 0.12) — borda com ênfase
+Texto:
+- `--fg`: hsl(0 0% 96%) — texto principal
+- `--fg-muted`: hsl(240 5% 65%) — texto secundário (≥4.5:1 contraste)
+- `--fg-subtle`: hsl(240 5% 48%) — metadados, labels (≥3:1, uso parcimonioso)
+Acento único (família violeta, sem neon):
+- `--accent`: hsl(255 85% 68%) — acento principal
+- `--accent-soft`: hsl(255 85% 68% / 0.12) — fundo de estado ativo
+- Gradiente roxo→azul: **apenas** no wordmark e CTA primário
+Cores semânticas (usadas como dots/labels pequenos, não como preenchimentos grandes):
+- `--semantic-yellow`: hsl(45 93% 58%) — prazo próximo
+- `--semantic-green`: hsl(142 76% 36%) — concluído
+- `--semantic-red`: hsl(0 72% 51%) — urgente/erro
+- `--semantic-blue`: hsl(199 89% 48%) — informacional
+Elevação (sombras pretas suaves, sem glow colorido):
+- `--shadow-1`: 0 1px 3px rgb(0 0 0 / 0.4)
+- `--shadow-2`: 0 4px 12px rgb(0 0 0 / 0.5)
+---
+ 
+#### Tipografia — Eixo Editorial
+ 
 Famílias de Fonte:
-- `--font-sans`: 'Inter Variable', system-ui, sans-serif — Textos de UI, mensagens, labels
-- `--font-mono`: 'JetBrains Mono', 'Fira Code', monospace — Código, dados estruturados, timestamps
-
-Escala Tipográfica:
-- `text-xs`: 0.75rem (12px) — timestamps, metadata
+- `--font-display`: 'Space Grotesk', system-ui — wordmark, títulos grandes
+- `--font-sans`: 'Inter Variable', system-ui, sans-serif — corpo, UI, mensagens
+- `--font-mono`: 'JetBrains Mono', monospace — código, timestamps, contadores (tabular numbers)
+Escala com contraste real:
+- display: 2.25–3rem, tracking -0.02em — wordmark, hero
+- `text-xl`: 1.375rem (22px), weight 600 — títulos de seção
+- `text-base`: 1rem (16px), line-height 1.6 — corpo principal
 - `text-sm`: 0.875rem (14px) — corpo secundário
-- `text-base`: 1rem (16px) — corpo principal
-- `text-lg`: 1.125rem (18px) — subtítulos
-- `text-xl`: 1.375rem (22px) — títulos de seção
-- `text-2xl`: 1.75rem (28px) — títulos principais
-- `text-3xl`: 2.25rem (36px) — hero text
-
-Pesos: 400 (normal), 500 (medium), 600 (semibold), 700 (bold)
-
-**Espaçamentos — Sistema Base 4px**
-- `spacing-1`: 0.25rem (4px)
-- `spacing-2`: 0.5rem (8px)
-- `spacing-3`: 0.75rem (12px)
-- `spacing-4`: 1rem (16px)
-- `spacing-6`: 1.5rem (24px)
-- `spacing-8`: 2rem (32px)
-- `spacing-12`: 3rem (48px)
-- `spacing-16`: 4rem (64px)
-
-**Border Radius — Soft Academic**
-- `radius-sm`: 0.375rem (6px) — badges, pills
+- labels de seção: 11px uppercase, tracking 0.12em, `--fg-subtle`
+- timestamps/contadores: JetBrains Mono tabular (evita pulo de layout)
+Medida de leitura: máximo ~66ch nas mensagens do chat.
+ 
+---
+ 
+#### Espaçamentos — Ritmo Base 8px
+ 
+- `spacing-1`: 0.5rem (8px)
+- `spacing-2`: 1rem (16px)
+- `spacing-3`: 1.5rem (24px)
+- `spacing-4`: 2rem (32px)
+- `spacing-6`: 3rem (48px)
+- `spacing-8`: 4rem (64px)
+Seções usam tiers 16/24/32px. Sidebars com mais respiro que o design anterior.
+ 
+---
+ 
+#### Border Radius
+ 
+- `radius-sm`: 0.375rem (6px) — badges, dots
 - `radius-md`: 0.5rem (8px) — buttons, inputs
-- `radius-lg`: 0.75rem (12px) — cards padrão
-- `radius-xl`: 1rem (16px) — modais, popovers
-- `radius-2xl`: 1.5rem (24px) — hero cards
-
-**Sombras — Elevação Neural**
-- `shadow-sm`: 0 1px 2px 0 rgb(0 0 0 / 0.05)
-- `shadow-md`: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)
-- `shadow-lg`: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)
-- `shadow-neural`: 0 0 30px hsla(250 95% 65% / 0.2), 0 10px 25px rgb(0 0 0 / 0.3) — Cards ativos, elementos em foco
-
-**Breakpoints Responsivos (Desktop-only)**
-- 1280px: HD — Sidebars 18%, Chat 64%
-- 1440px: Full HD — Sidebars 20%, Chat 60% (padrão)
-- 1920px: Full HD — Sidebars 22%, Chat 56%
-- 2560px+: 2K/4K — Max-width 2200px centralizado
-
-#### Componentes Base (shadcn/ui)
-
-Instalar via CLI:
-```bash
-npx shadcn-ui@latest init
-npx shadcn-ui@latest add button card input textarea badge avatar scroll-area separator tooltip dropdown-menu
+- `radius-lg`: 0.75rem (12px) — cards
+- `radius-xl`: 1rem (16px) — modais
+---
+ 
+#### Componentes — Decisões de Implementação
+ 
+**GradientButton**
+- Primário: fill sólido `--accent`, sem gradiente
+- Secundário: ghost com `--hairline`
+- CTA principal (Nova Conversa): gradiente roxo→azul permitido aqui
+**GlassCard**
+- Fundo: `--surface-1` sólido (sem backdrop-blur)
+- Borda: `--hairline`
+- Props e assinatura mantidos para não quebrar usos existentes
+**GradientBadge**
+- Dot 6px + texto sólido, fundo `--accent-soft`
+- Um único estilo (sem variantes translúcidas /20)
+**Chat Message — Usuário**
+- Background: `--accent` sólido (ou `--surface-2` + borda de acento)
+- Border-radius assimétrico no canto de origem
+**Chat Message — Assistente**
+- Background: `--surface-1` plano, sem blur
+- Medida de leitura ~66ch, line-height 1.6
+**ChatEmpty**
+- Ícones Lucide: BookOpen, CalendarDays, CheckSquare (zero emoji estrutural)
+- Cards com `--surface-1` + `--hairline`
+**NeuralPulse (loading)**
+- 3 dots com `--accent` sólido
+- Timing sóbrio (1.4s, ease-in-out)
+**Sidebar — Labels de Seção**
+- "CONVERSAS", "MATERIAIS", "AGENDA", "TAREFAS": 11px uppercase, `--fg-subtle`
+- Estado ativo: `--accent-soft` + barra lateral sólida de 2px em `--accent`
+**AgendaMiniCal**
+- Dia selecionado: fundo `--accent` sólido
+- Hoje: ring fino `--accent`, sem fill
+**Ícones**
+- Família única: Lucide
+- Tamanhos: icon-sm 16px / icon-md 20px
+- Stroke consistente (1.5px)
+- Zero emoji em elementos estruturais de UI
+---
+ 
+#### Animações — Movimento com Propósito
+ 
+**Removidos (loops ambientes):**
+- `input-glow-pulse` (2s loop no input)
+- `border-gradient-pulse` no header durante streaming
+**Mantidos e refinados (disparados por ação):**
+- Entrada de mensagem: fade-slide-up, 200ms ease-out, stagger 30–50ms em lista
+- Feedback de envio: pulso único (não loop)
+- Tarefa concluída: confetti sutil 4–6 partículas, 0.8s (pode ficar mais sóbrio)
+- Hover lift: `translateY(-2px)` + `--shadow-2`, 150ms ease-out
+- Foco de input: ring `--accent`, transição 150ms
+**Easing padrão:** 150–300ms, ease-out na entrada.
+ 
+**Acessibilidade obrigatória:**
+```css
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
 ```
-
-Customização com variáveis CSS:
-```tsx
-// Button com gradiente
-<Button className="bg-gradient-to-r from-[var(--primary-start)] to-[var(--primary-end)]">
-  Enviar
-</Button>
-
-// Card com glassmorphism
-<Card className="bg-[var(--glass-bg)] backdrop-blur-[var(--glass-blur)] border-[var(--glass-border)]">
-  {/* Conteúdo */}
-</Card>
-```
-
-#### Componentes Distintivos
-
-**1. Chat Message — Neural Bubble**
-
-Mensagem do Usuário:
-- Background: `linear-gradient(135deg, var(--primary-start), var(--primary-end))`
-- Border: `1px solid var(--primary-glow)`
-- Border-radius: `var(--radius-lg)`
-- Padding: `var(--spacing-4)`
-- Font: Inter Medium (500)
-- Box-shadow: `var(--shadow-md)`
-
-Mensagem da IA:
-- Background: `var(--glass-bg)`
-- Backdrop-filter: `blur(var(--glass-blur))`
-- Border: `1px solid var(--glass-border)`
-- Font: Inter Regular (400)
-- Code blocks: JetBrains Mono
-
-**2. Sidebar Widget — Academic Card**
-- Background: `var(--surface)`
-- Border-top: 2px solid com gradiente roxo→azul
-- Border-radius: `var(--radius-lg)`
-- Box-shadow: `var(--shadow-neural)`
-- Status colors: academic-blue (normal), academic-green (concluído), academic-red (urgente), academic-yellow (destaque)
-
-**3. Loading State — Neural Pulse**
-- 3 círculos de 8px cada
-- Background: Gradiente animado `--primary-start` → `--primary-end`
-- Animação: pulse-wave 1.4s ease-in-out infinite, delay 0.2s entre dots
-
-#### Layout Híbrido — 3 Colunas
-
+ 
+---
+ 
+#### Acessibilidade
+ 
+- `aria-label` em todos os botões só-ícone (fechar conversa, enviar, etc.)
+- Contraste `--fg-muted` ≥ 4.5:1, `--fg-subtle` ≥ 3:1
+- Foco visível consistente em todos os elementos interativos
+- Navegação por teclado (Tab, Enter, Esc)
+---
+ 
+#### Layout — 3 Colunas (mantido)
+ 
 ```
 ┌────────┬─────────────────────────┬──────────┐
 │ NAV    │   CHAT CENTRAL          │ WIDGETS  │
 │ 20%    │   60%                   │  20%     │
 ├────────┼─────────────────────────┼──────────┤
 │        │                         │          │
-│ [Logo] │  ┌──────────────────┐   │ [AGENDA] │
-│ Chat   │  │ User Message     │   │ 10:00 IA │
-│ Agenda │  └──────────────────┘   │ 14:00 BD │
-│ Tasks  │  ┌──────────────────┐   │          │
-│ Config │  │ AI Response      │   │ [TAREFAS]│
-│ [Dark] │  │ [Glassmorphism]  │   │ □ RAG    │
-│        │  └──────────────────┘   │ ✓ API    │
-│        │  [Input gradiente]      │          │
+│ JARVIS │  ┌──────────────────┐   │ AGENDA   │
+│ ─────  │  │ User Message     │   │ ──────── │
+│ Chats  │  │ [accent sólido]  │   │ eventos  │
+│ ─────  │  └──────────────────┘   │          │
+│ Materiais  ┌──────────────────┐   │ TAREFAS  │
+│        │  │ AI Response      │   │ ──────── │
+│        │  │ [surface-1 plano]│   │ itens    │
+│        │  └──────────────────┘   │          │
+│        │  [Input + hairline]     │          │
 └────────┴─────────────────────────┴──────────┘
 ```
-
-#### Micro-interações Distintivas
-
-1. **Message Sent:** Pulso de luz percorre borda (left→right, 0.6s)
-2. **Tool Calling:** Borda do chat pulsa com gradiente (1.2s loop)
-3. **Task Completed:** Checkbox com confetti sutil (4-6 partículas, 0.8s)
-4. **Hover Cards:** Elevação `translateY(-4px)` + shadow-neural
-5. **Typing Indicator:** Gradiente animado percorre borda do input (2s loop)
-
-#### Princípios de Design
-
-1. **Identidade Visual Distintiva**
-   - Glassmorphism sutil em cards principais
-   - Gradientes direcionais roxo→azul em elementos interativos
-   - Tipografia dual: Inter para UI, JetBrains Mono para código/dados
-   - Micro-animações com easing cubic-bezier(0.4, 0, 0.2, 1)
-
-2. **Hierarquia Visual Clara**
-   - Layout 3 colunas: Nav (20%) + Chat (60%) + Widgets (20%)
-   - Profundidade via sombras neurais em cards ativos
-   - Contraste elevado: texto #FAFAFA sobre fundo #0A0A0F
-
-3. **Estados Interativos**
-   - Hover: Elevação + shadow-neural + scale-[1.02]
-   - Focus: Ring gradiente ring-2 ring-primary-start
-   - Active: Pulso de luz (animação border-gradient)
-   - Disabled: Opacidade 40% + cursor not-allowed
-
-4. **Feedback Visual**
-   - Loading: 3 dots com pulso gradiente sequencial
-   - Streaming: Efeito typewriter + cursor piscante
-   - Sucesso: Badge verde com check + micro-animação
-   - Erro: Badge vermelho + shake animation
-   - Tool Calling: Borda pulsante durante execução
-
-5. **Acessibilidade**
-   - Contraste mínimo 7:1 (WCAG AAA)
-   - Focus visível em todos elementos interativos
-   - Labels semânticos + ARIA para leitores de tela
-   - Navegação por teclado (Tab, Enter, Esc)
-
-#### Diferencial vs Design Genérico
-
-| Aspecto | Genérico | JARVIS |
-|---------|----------|--------|
-| Cores | Azul flat | Gradiente roxo→azul neural |
-| Cards | Brancos/cinza sólido | Glassmorphism com blur |
-| Tipografia | Sans única | Dual (Inter + JetBrains Mono) |
-| Estados | Hover básico | Elevação + brilho neural |
-| Loading | Spinner comum | Pulso gradiente sequencial |
-| Identidade | Dashboard genérico | Interface neural acadêmica |
-
+ 
+Proporções idênticas ao design anterior. Apenas tokens, espaçamento e natureza das animações mudam.
+ 
 ---
+ 
+#### Breakpoints (mantidos)
+ 
+- 1280px: HD — Sidebars 18%, Chat 64%
+- 1440px: Full HD — Sidebars 20%, Chat 60% (padrão)
+- 1920px: Full HD — Sidebars 22%, Chat 56%
+- 2560px+: Max-width 2200px centralizado
 
 ## 3. ESTRUTURA DE DIRETÓRIOS
 

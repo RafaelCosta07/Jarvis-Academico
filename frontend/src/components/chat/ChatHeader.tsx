@@ -1,5 +1,5 @@
 import type { ChatStatus } from '@/types/chat'
-import { Loader2 } from 'lucide-react'
+import { Loader2, AlertTriangle, Sparkles } from 'lucide-react'
 
 interface ChatHeaderProps {
   title: string
@@ -8,15 +8,25 @@ interface ChatHeaderProps {
 
 function StatusBadge({ status }: { status: ChatStatus }) {
   if (status === 'idle') return null
-  if (status === 'error') return <span className="text-xs text-academic-red">⚠ Erro</span>
-  if (status === 'loading') {
+  if (status === 'error') {
     return (
-      <span className="flex items-center gap-1 text-xs text-muted-foreground">
-        <Loader2 className="w-3 h-3 animate-spin" />Processando...
+      <span className="flex items-center gap-1 text-xs text-academic-red">
+        <AlertTriangle className="w-3 h-3" aria-hidden="true" />Erro
       </span>
     )
   }
-  return <span className="text-xs text-muted-foreground">▶ Gerando...</span>
+  if (status === 'loading') {
+    return (
+      <span className="flex items-center gap-1 text-xs text-muted-foreground">
+        <Loader2 className="w-3 h-3 animate-spin" aria-hidden="true" />Processando...
+      </span>
+    )
+  }
+  return (
+    <span className="flex items-center gap-1 text-xs text-muted-foreground">
+      <Sparkles className="w-3 h-3" aria-hidden="true" />Gerando…
+    </span>
+  )
 }
 
 export default function ChatHeader({ title, status }: ChatHeaderProps) {

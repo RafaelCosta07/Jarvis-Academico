@@ -1,9 +1,12 @@
+from app.tools.active_recall import executar_active_recall
 from app.tools.adicionar_evento import executar_adicionar_evento
 from app.tools.adicionar_tarefa import executar_adicionar_tarefa
 from app.tools.buscar_material_rag import executar_buscar_material_rag
 from app.tools.concluir_tarefa import executar_concluir_tarefa
 from app.tools.consultar_agenda import executar_consultar_agenda
+from app.tools.gerar_exercicios import executar_gerar_exercicios
 from app.tools.listar_tarefas import executar_listar_tarefas
+from app.tools.planejar_estudos import executar_planejar_estudos
 
 TOOLS_REGISTRY: list[dict] = [
     {
@@ -212,6 +215,115 @@ TOOLS_REGISTRY: list[dict] = [
             },
         },
     },
+    {
+        "type": "function",
+        "function": {
+            "name": "gerar_exercicios",
+            "description": (
+                "Gera 3 questões de múltipla escolha com base nos materiais de estudo indexados. "
+                "Use quando o usuário pedir para criar exercícios, questões ou perguntas de prática "
+                "sobre um tópico acadêmico. "
+                "Exemplos: 'gere exercícios sobre redes neurais', 'crie questões de regressão logística', "
+                "'me dê perguntas para estudar embeddings', 'quero praticar com exercícios de CNN'."
+            ),
+            "parameters": {
+                "type": "object",
+                "required": ["topico"],
+                "properties": {
+                    "topico": {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 300,
+                        "description": "Tema sobre o qual gerar os exercícios. Ex: 'redes neurais convolucionais'.",
+                    },
+                    "top_k": {
+                        "type": "integer",
+                        "default": 10,
+                        "minimum": 3,
+                        "maximum": 15,
+                        "description": "Número de trechos de material a recuperar como base. Use 10 por padrão.",
+                    },
+                },
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "active_recall",
+            "description": (
+                "Pratica active recall (recordação ativa) com o estudante em dois modos. "
+                "MODO 1 (gerar pergunta): quando o usuário pedir para ser testado ou praticar — "
+                "chame APENAS com 'topico', SEM 'resposta_usuario'. "
+                "Exemplos: 'me teste sobre regressão logística', 'quero praticar redes neurais', "
+                "'faça perguntas sobre embeddings'. "
+                "MODO 2 (avaliar resposta): quando o usuário responder a uma pergunta de recall que "
+                "você acabou de fazer — chame com 'resposta_usuario' e repasse 'pergunta', "
+                "'resposta_referencia' e 'sessao_id' exatamente como retornados na pergunta anterior."
+            ),
+            "parameters": {
+                "type": "object",
+                "required": ["topico"],
+                "properties": {
+                    "topico": {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 300,
+                        "description": "Tema do active recall. Ex: 'regressão logística'.",
+                    },
+                    "resposta_usuario": {
+                        "type": "string",
+                        "description": "Resposta do estudante. OMITIR no Modo 1 (gerar pergunta). Obrigatório no Modo 2 (avaliar).",
+                    },
+                    "pergunta": {
+                        "type": "string",
+                        "description": "A pergunta gerada no turno anterior. Obrigatório no Modo 2 para avaliar corretamente.",
+                    },
+                    "resposta_referencia": {
+                        "type": "string",
+                        "description": "A resposta esperada retornada no turno anterior. Obrigatório no Modo 2.",
+                    },
+                    "sessao_id": {
+                        "type": "string",
+                        "description": "O sessao_id retornado no turno anterior. Repasse no Modo 2 para registrar a avaliação.",
+                    },
+                },
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "planejar_estudos",
+            "description": (
+                "Gera um plano de estudos personalizado combinando a agenda do estudante, suas tarefas "
+                "pendentes, os tópicos em que ele tem mais dificuldade e os materiais de estudo. "
+                "Use quando o usuário pedir para se organizar, montar um cronograma ou priorizar estudos. "
+                "Exemplos: 'monte um plano de estudos para a prova de IA', 'o que devo priorizar hoje?', "
+                "'crie uma agenda de estudos para esta semana', 'como me organizar para as provas?'."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "horizonte_dias": {
+                        "type": "integer",
+                        "default": 7,
+                        "minimum": 1,
+                        "maximum": 30,
+                        "description": "Quantos dias à frente o plano deve cobrir. Use 7 para 'esta semana', 1 para 'hoje'.",
+                    },
+                    "disciplina": {
+                        "type": "string",
+                        "description": "Filtrar o plano por uma disciplina específica. Opcional. Ex: 'Inteligência Artificial'.",
+                    },
+                    "foco": {
+                        "type": "string",
+                        "description": "Foco do plano para a busca de material. Opcional. Ex: 'prova', 'revisão', 'redes neurais'.",
+                    },
+                },
+            },
+        },
+    },
 ]
 
 TOOLS_EXECUTORES: dict = {
@@ -221,6 +333,9 @@ TOOLS_EXECUTORES: dict = {
     "adicionar_tarefa": executar_adicionar_tarefa,
     "concluir_tarefa": executar_concluir_tarefa,
     "buscar_material_rag": executar_buscar_material_rag,
+    "gerar_exercicios": executar_gerar_exercicios,
+    "active_recall": executar_active_recall,
+    "planejar_estudos": executar_planejar_estudos,
 }
 
 TOOLS_DISPATCH = TOOLS_EXECUTORES

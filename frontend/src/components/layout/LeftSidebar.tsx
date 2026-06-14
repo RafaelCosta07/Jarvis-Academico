@@ -24,9 +24,9 @@ interface ConversationItemProps {
 
 function ConversationItem({ conversation, isActive, onSelect, onDelete }: ConversationItemProps) {
   return (
-    <div className={`relative flex items-center group rounded-md transition-colors ${isActive ? 'bg-glass-bg' : 'hover:bg-surface/80'}`}>
+    <div className={`relative flex items-center group rounded-md transition-colors ${isActive ? 'bg-accent-soft' : 'hover:bg-surface-2'}`}>
       {isActive && (
-        <div className="absolute left-0 top-1 bottom-1 w-0.5 rounded-full bg-gradient-to-b from-[var(--color-primary-start)] to-[var(--color-primary-end)]" />
+        <div className="absolute left-0 top-1 bottom-1 w-0.5 rounded-full bg-primary" />
       )}
       <button onClick={() => onSelect(conversation.id)} className="flex-1 text-left px-3 py-2 pl-3 min-w-0">
         <p className="text-sm truncate text-foreground">{conversation.title}</p>
@@ -34,9 +34,10 @@ function ConversationItem({ conversation, isActive, onSelect, onDelete }: Conver
       </button>
       <button
         onClick={e => { e.stopPropagation(); onDelete(conversation.id) }}
+        aria-label="Excluir conversa"
         className="mr-1.5 p-1 rounded opacity-0 group-hover:opacity-60 hover:!opacity-100 hover:text-academic-red transition-opacity"
       >
-        <X className="w-3 h-3" />
+        <X className="w-3 h-3" aria-hidden="true" />
       </button>
     </div>
   )
@@ -58,13 +59,17 @@ export default function LeftSidebar({ conversations, activeId, onNew, onSelect, 
     <aside className="h-full bg-surface border-r border-border flex flex-col overflow-hidden">
       <div className="p-4 border-b border-border flex flex-col gap-3 shrink-0">
         <div>
-          <span className="text-xl font-bold bg-gradient-to-r from-[var(--color-primary-start)] to-[var(--color-primary-end)] bg-clip-text text-transparent">JARVIS</span>
-          <span className="text-xs text-muted-foreground ml-2">Academic</span>
+          <span className="font-display text-xl font-semibold tracking-tight bg-gradient-to-r from-[var(--color-primary-start)] to-[var(--color-primary-end)] bg-clip-text text-transparent">JARVIS</span>
+          <span className="text-xs text-fg-subtle ml-2">Academic</span>
         </div>
-        <GradientButton onClick={onNew} className="w-full text-sm py-1.5">+ Nova Conversa</GradientButton>
+        <GradientButton
+          onClick={onNew}
+          className="w-full text-sm py-1.5"
+          style={{ background: 'linear-gradient(135deg, var(--color-primary-start), var(--color-primary-end))' }}
+        >+ Nova Conversa</GradientButton>
       </div>
       <div className="flex flex-col flex-1 min-h-0 px-2 py-2">
-        <p className="text-[10px] uppercase tracking-widest text-muted-foreground px-2 pb-1 shrink-0">Conversas</p>
+        <p className="text-[11px] font-medium uppercase tracking-widest text-fg-subtle px-2 pb-1 shrink-0">Conversas</p>
         <div className="flex-1 overflow-y-auto min-h-0 scroll-fade" onScroll={handleScrollConversas}>
           {conversations.length === 0 && (
             <p className="text-xs text-muted-foreground px-2 py-1">Nenhuma conversa ainda.</p>
@@ -76,7 +81,7 @@ export default function LeftSidebar({ conversations, activeId, onNew, onSelect, 
       </div>
       <Separator className="mx-2 shrink-0" />
       <div className="shrink-0 px-2 py-2">
-        <p className="text-[10px] uppercase tracking-widest text-muted-foreground px-2 pb-1">Materiais</p>
+        <p className="text-[11px] font-medium uppercase tracking-widest text-fg-subtle px-2 pb-1">Materiais</p>
         <div className="overflow-y-auto max-h-48 scroll-fade" onScroll={handleScrollMateriais}>
           <MateriaisList />
         </div>

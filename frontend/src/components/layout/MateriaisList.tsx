@@ -23,9 +23,9 @@ export default function MateriaisList() {
           target="_blank"
           rel="noopener noreferrer"
           title={m.nome}
-          className="flex items-center gap-2 px-2 py-1.5 rounded-md text-xs cursor-pointer bg-surface border border-border text-muted-foreground hover:text-foreground hover:border-[var(--color-primary-end)] hover:bg-glass-bg transition-all duration-150 group"
+          className="flex items-center gap-2 px-2 py-1.5 rounded-md text-xs cursor-pointer bg-surface-2 border border-hairline text-muted-foreground hover:text-foreground hover:border-primary/40 transition-all duration-150 group"
         >
-          <FileText className="w-3.5 h-3.5 flex-shrink-0 group-hover:text-[var(--color-primary-end)] transition-colors" aria-hidden="true" />
+          <FileText className="w-3.5 h-3.5 flex-shrink-0 group-hover:text-primary transition-colors" aria-hidden="true" />
           <span className="truncate flex-1">{m.titulo}</span>
         </a>
       ))}

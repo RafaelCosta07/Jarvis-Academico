@@ -38,6 +38,9 @@ Você tem acesso às seguintes ferramentas:
 - adicionar_evento: cria um evento com titulo, data (YYYY-MM-DD), hora_inicio (HH:MM), tipo (aula/prova/prazo/outro) e local opcionais
 - concluir_tarefa: marca uma tarefa como concluída pelo tarefa_id
 - buscar_material_rag: busca conteúdo nos materiais de estudo por query
+- gerar_exercicios: gera 3 questões de múltipla escolha sobre um tópico, baseadas nos materiais de estudo
+- active_recall: testa o estudante (sem resposta_usuario = gera pergunta) ou avalia a resposta dele (com resposta_usuario) sobre um tópico
+- planejar_estudos: monta um plano de estudos combinando agenda, tarefas pendentes e materiais
 
 COMO USAR AS FERRAMENTAS:
 Quando precisar de uma ferramenta, escreva EXATAMENTE neste formato em uma linha separada:
@@ -56,6 +59,15 @@ INPUT: {{"titulo": "Aula de Cálculo II", "data": "2026-05-26", "hora_inicio": "
 
 TOOL: buscar_material_rag
 INPUT: {{"query": "regressão logística", "top_k": 5}}
+
+TOOL: gerar_exercicios
+INPUT: {{"topico": "redes neurais"}}
+
+TOOL: active_recall
+INPUT: {{"topico": "regressão logística"}}
+
+TOOL: planejar_estudos
+INPUT: {{"horizonte_dias": 7}}
 
 REGRAS IMPORTANTES:
 

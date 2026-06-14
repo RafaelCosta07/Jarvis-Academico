@@ -38,7 +38,7 @@ export default function AgendaAddForm({ onSaved, onCancel, dataSelecionada }: Ag
   }
 
   return (
-    <div className="flex flex-col gap-1.5 p-2 rounded-lg border border-[var(--glass-border)] bg-[var(--glass-bg)]">
+    <div className="flex flex-col gap-1.5 p-2 rounded-lg border border-hairline bg-surface-2">
       <input
         placeholder="Nome do evento…"
         value={titulo}

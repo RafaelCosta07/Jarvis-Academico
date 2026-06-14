@@ -9,9 +9,8 @@ export default function GlassCard({ children, className = '', error = false }: G
     <div
       className={`border ${className}`}
       style={{
-        background: 'var(--color-glass-bg)',
-        backdropFilter: 'blur(var(--glass-blur))',
-        borderColor: error ? 'var(--color-academic-red)' : 'var(--color-glass-border)',
+        background: 'var(--color-surface)',
+        borderColor: error ? 'var(--color-academic-red)' : 'var(--color-hairline)',
         borderRadius: 'var(--radius-lg)',
         padding: '1rem',
         animation: error ? 'shake 0.4s ease-out' : undefined,

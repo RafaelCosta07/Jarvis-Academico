@@ -39,7 +39,7 @@ export default function TaskItem({ tarefa, onConcluida, onRevert }: TaskItemProp
   }
 
   return (
-    <div className="relative flex items-start gap-2 py-1.5 px-1 rounded-md transition-all duration-200 hover:-translate-y-1 hover:shadow-[var(--shadow-neural)]">
+    <div className="relative flex items-start gap-2 py-1.5 px-1 rounded-md transition-all duration-200 hover:-translate-y-0.5 hover:shadow-2">
       <ConfettiParticles active={celebrating} />
       <Checkbox checked={concluida} disabled={loading} onCheckedChange={handleCheck} className="mt-0.5 shrink-0" />
       <div className="flex-1 min-w-0">
@@ -49,7 +49,7 @@ export default function TaskItem({ tarefa, onConcluida, onRevert }: TaskItemProp
         <p className="text-xs text-muted-foreground truncate">
           {tarefa.disciplina ?? ''}
           {tarefa.prazo && (
-            <span className={vencida ? 'text-academic-red' : ''}>
+            <span className={`tabular-nums ${vencida ? 'text-academic-red' : ''}`}>
               {tarefa.disciplina ? ' · ' : ''}
               {format(parseISO(tarefa.prazo), 'd MMM', { locale: ptBR })}
             </span>

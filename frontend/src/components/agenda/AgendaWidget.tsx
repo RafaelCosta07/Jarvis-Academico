@@ -91,7 +91,7 @@ export default function AgendaWidget() {
 
   return (
     <section className="flex flex-col gap-3">
-      <h2 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground px-1">Agenda</h2>
+      <h2 className="text-[11px] font-semibold uppercase tracking-widest text-fg-subtle px-1">Agenda</h2>
       <AgendaMiniCal
         ano={mesAtual.ano} mes={mesAtual.mes} eventos={todosEventos}
         dataSelecionada={dataSelecionada} onDayClick={handleDayClick}

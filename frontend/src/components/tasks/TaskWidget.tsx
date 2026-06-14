@@ -47,7 +47,7 @@ export default function TaskWidget() {
   return (
     <section className="flex flex-col gap-3">
       <div className="flex items-center justify-between px-1">
-        <h2 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Tarefas</h2>
+        <h2 className="text-[11px] font-semibold uppercase tracking-widest text-fg-subtle">Tarefas</h2>
         {pendentes > 0 && (
           <span className="text-xs text-academic-yellow font-medium">{pendentes} pendente{pendentes > 1 ? 's' : ''}</span>
         )}
