@@ -1,0 +1,156 @@
+{
+  "metadata": {
+    "dataset": "Materiais de IA/ML — JARVIS Acadêmico",
+    "total_questions": 10,
+    "created_at": "2026-06-14T10:00:00Z"
+  },
+  "questions": [
+    {
+      "id": 1,
+      "pergunta": "Explique o que é regressão logística e quando ela é usada.",
+      "categoria": "conceito_basico",
+      "documentos_esperados": [
+        "01_apostila_machine_learning_ufes.pdf",
+        "06_introduction_to_machine_learning_arxiv.pdf"
+      ],
+      "resposta_esperada": "Regressão logística é um algoritmo de classificação que modela a probabilidade de uma classe usando a função sigmoide (logística). É usada quando a variável-alvo é categórica, tipicamente em problemas de classificação binária.",
+      "criterios_avaliacao": [
+        "Identifica que é um método de classificação (não de regressão contínua)",
+        "Menciona a função sigmoide/logística para estimar probabilidade",
+        "Dá pelo menos um exemplo de aplicação ou contexto de uso"
+      ]
+    },
+    {
+      "id": 2,
+      "pergunta": "O que são redes neurais artificiais e quais são seus componentes básicos?",
+      "categoria": "conceito_basico",
+      "documentos_esperados": [
+        "03_redes_neurais_aprendizado_artificial.pdf"
+      ],
+      "resposta_esperada": "Redes neurais artificiais são modelos computacionais inspirados no cérebro, compostos por neurônios organizados em camadas (entrada, ocultas e saída), conectados por pesos ajustáveis. Cada neurônio aplica uma função de ativação à soma ponderada de suas entradas.",
+      "criterios_avaliacao": [
+        "Menciona neurônios organizados em camadas",
+        "Cita pesos/conexões ajustáveis durante o treinamento",
+        "Menciona função de ativação"
+      ]
+    },
+    {
+      "id": 3,
+      "pergunta": "O que são embeddings e por que são importantes em NLP?",
+      "categoria": "conceito_basico",
+      "documentos_esperados": [
+        "10_nlp_network_embedding_tutorial_arxiv.pdf",
+        "09_deep_learning_nlp_trends_arxiv.pdf"
+      ],
+      "resposta_esperada": "Embeddings são representações vetoriais densas de palavras, documentos ou nós, que capturam relações semânticas em um espaço de baixa dimensão. São importantes porque permitem que modelos processem dados simbólicos numericamente, preservando similaridade semântica.",
+      "criterios_avaliacao": [
+        "Define embedding como representação vetorial densa",
+        "Menciona captura de semântica/similaridade",
+        "Explica a utilidade para entrada de modelos de ML/NLP"
+      ]
+    },
+    {
+      "id": 4,
+      "pergunta": "O que é overfitting e como evitá-lo?",
+      "categoria": "conceito_basico",
+      "documentos_esperados": [
+        "06_introduction_to_machine_learning_arxiv.pdf",
+        "08_brief_intro_ml_engineers_arxiv.pdf"
+      ],
+      "resposta_esperada": "Overfitting ocorre quando um modelo aprende ruído e particularidades dos dados de treino, perdendo capacidade de generalização para dados novos. Pode ser evitado com regularização, validação cruzada, mais dados, early stopping ou modelos mais simples.",
+      "criterios_avaliacao": [
+        "Define overfitting como ajuste excessivo aos dados de treino com perda de generalização",
+        "Cita o contraste entre desempenho em treino e teste",
+        "Indica pelo menos duas técnicas de prevenção (regularização, validação cruzada, etc.)"
+      ]
+    },
+    {
+      "id": 5,
+      "pergunta": "Explique como funciona o algoritmo gradient descent (descida de gradiente).",
+      "categoria": "algoritmo",
+      "documentos_esperados": [
+        "06_introduction_to_machine_learning_arxiv.pdf",
+        "08_brief_intro_ml_engineers_arxiv.pdf"
+      ],
+      "resposta_esperada": "Gradient descent é um algoritmo de otimização iterativo que minimiza uma função de custo ajustando os parâmetros na direção oposta ao gradiente. A cada passo, os pesos são atualizados proporcionalmente à taxa de aprendizado multiplicada pelo gradiente.",
+      "criterios_avaliacao": [
+        "Identifica como método iterativo de otimização/minimização de custo",
+        "Menciona o uso do gradiente (derivada) para definir a direção de atualização",
+        "Cita a taxa de aprendizado (learning rate)"
+      ]
+    },
+    {
+      "id": 6,
+      "pergunta": "O que são redes neurais convolucionais (CNNs) e para que servem?",
+      "categoria": "arquitetura",
+      "documentos_esperados": [
+        "09_deep_learning_nlp_trends_arxiv.pdf"
+      ],
+      "resposta_esperada": "CNNs são redes neurais especializadas em dados com estrutura de grade, como imagens. Usam camadas convolucionais com filtros que detectam características locais (bordas, texturas), camadas de pooling para reduzir dimensionalidade e camadas densas para classificação.",
+      "criterios_avaliacao": [
+        "Menciona a operação de convolução com filtros",
+        "Cita aplicação em imagens ou dados com estrutura espacial/local",
+        "Menciona pelo menos um tipo de camada além da convolucional (pooling, fully-connected)"
+      ]
+    },
+    {
+      "id": 7,
+      "pergunta": "Quais são as etapas típicas de um pipeline de processamento de linguagem natural (NLP)?",
+      "categoria": "aplicacao",
+      "documentos_esperados": [
+        "10_nlp_network_embedding_tutorial_arxiv.pdf",
+        "09_deep_learning_nlp_trends_arxiv.pdf"
+      ],
+      "resposta_esperada": "Um pipeline de NLP tipicamente inclui tokenização, normalização (lowercasing, remoção de stopwords), representação vetorial (embeddings), modelagem e avaliação. O texto bruto é transformado em representações numéricas que alimentam modelos de aprendizado.",
+      "criterios_avaliacao": [
+        "Menciona tokenização como etapa inicial",
+        "Cita transformação do texto em representação numérica/vetorial",
+        "Menciona pelo menos uma etapa de pré-processamento (normalização, stopwords)"
+      ]
+    },
+    {
+      "id": 8,
+      "pergunta": "O que é o mecanismo de atenção e qual sua relação com a arquitetura Transformer?",
+      "categoria": "arquitetura",
+      "documentos_esperados": [
+        "09_deep_learning_nlp_trends_arxiv.pdf"
+      ],
+      "resposta_esperada": "O mecanismo de atenção permite que o modelo pondere a relevância de diferentes partes da entrada ao processar cada elemento. A arquitetura Transformer é baseada inteiramente em atenção (self-attention), dispensando recorrência e permitindo paralelização.",
+      "criterios_avaliacao": [
+        "Explica atenção como ponderação da relevância entre elementos da sequência",
+        "Associa o Transformer ao uso de self-attention",
+        "Menciona uma vantagem (paralelização, dependências de longo alcance) ou a dispensa de recorrência"
+      ]
+    },
+    {
+      "id": 9,
+      "pergunta": "Explique o algoritmo de clustering K-means.",
+      "categoria": "algoritmo",
+      "documentos_esperados": [
+        "07_intro_ml_for_sciences_arxiv.pdf",
+        "01_apostila_machine_learning_ufes.pdf"
+      ],
+      "resposta_esperada": "K-means é um algoritmo de aprendizado não-supervisionado que particiona os dados em K grupos. Ele alterna entre atribuir cada ponto ao centroide mais próximo e recalcular os centroides como a média dos pontos do grupo, até convergir.",
+      "criterios_avaliacao": [
+        "Identifica como método não-supervisionado de agrupamento",
+        "Menciona os centroides e a atribuição pelo mais próximo",
+        "Descreve a natureza iterativa (atribuição + atualização até convergência)"
+      ]
+    },
+    {
+      "id": 10,
+      "pergunta": "O que são árvores de decisão e como elas escolhem os critérios de divisão?",
+      "categoria": "algoritmo",
+      "documentos_esperados": [
+        "08_brief_intro_ml_engineers_arxiv.pdf",
+        "01_apostila_machine_learning_ufes.pdf"
+      ],
+      "resposta_esperada": "Árvores de decisão são modelos que dividem recursivamente os dados em nós com base em atributos, formando uma estrutura hierárquica de decisões. A escolha do critério de divisão usa medidas como entropia/ganho de informação ou índice de Gini para maximizar a pureza dos nós.",
+      "criterios_avaliacao": [
+        "Descreve a estrutura hierárquica de divisões/nós",
+        "Menciona uma métrica de divisão (entropia, ganho de informação ou Gini)",
+        "Associa a divisão ao objetivo de aumentar a pureza/separação das classes"
+      ]
+    }
+  ]
+}

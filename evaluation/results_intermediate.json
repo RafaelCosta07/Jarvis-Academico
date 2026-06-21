@@ -1,0 +1,194 @@
+{
+  "metadata": {
+    "evaluated_at": "2026-06-14T18:40:54Z",
+    "total_questions": 10,
+    "correct": 3,
+    "partial": 4,
+    "incorrect": 3,
+    "accuracy": 0.30
+  },
+  "results": [
+    {
+      "question_id": 1,
+      "pergunta": "Explique o que é regressão logística e quando ela é usada.",
+      "chunks_recuperados": [
+        {
+          "fonte": "01_apostila_machine_learning_ufes.pdf",
+          "pagina": 44,
+          "score": 0.312,
+          "conteudo": "adaptativos, como ADAM ou ADAGRAD, para diminuir o tempo de treinamento..."
+        }
+      ],
+      "resposta_gerada": "O sistema informou não encontrar material específico e respondeu com conhecimento geral: regressão logística é um método estatístico para modelar probabilidade de evento binário, usada em classificação e análise de risco.",
+      "classificacao": "parcialmente_correta",
+      "justificativa": "A resposta explica corretamente o conceito e casos de uso, mas não está ancorada no material do dataset — o sistema admitiu não encontrar trechos relevantes. Critério 'menciona função sigmoid' não foi atendido explicitamente.",
+      "criterios_atendidos": 2,
+      "criterios_totais": 3
+    },
+    {
+      "question_id": 2,
+      "pergunta": "O que são redes neurais artificiais e quais são seus componentes básicos?",
+      "chunks_recuperados": [
+        {
+          "fonte": "02_apostila_inteligencia_artificial_uece.pdf",
+          "pagina": 62,
+          "score": 0.4061,
+          "conteudo": "A característica mais significante de redes neurais está em sua habilidade de aproximar qualquer função contínua não linear..."
+        },
+        {
+          "fonte": "02_apostila_inteligencia_artificial_uece.pdf",
+          "pagina": 52,
+          "score": 0.3844,
+          "conteudo": "Redes Neurais Artificiais são..."
+        }
+      ],
+      "resposta_gerada": "Redes Neurais Artificiais são modelos matemáticos inspirados na estrutura neural biológica. Componentes: neurônios artificiais (perceptrons) com múltiplas entradas, pesos sinápticos, função de ativação (degrau, sigmoid, tanh). Cada neurônio realiza combinação linear das entradas ponderadas pelos pesos.",
+      "classificacao": "correta",
+      "justificativa": "Resposta completa: menciona inspiração biológica, neurônios/perceptrons, pesos sinápticos e funções de ativação. Chunks relevantes recuperados com scores adequados (0.38-0.41). Todos os 3 critérios atendidos.",
+      "criterios_atendidos": 3,
+      "criterios_totais": 3
+    },
+    {
+      "question_id": 3,
+      "pergunta": "O que são embeddings e por que são importantes em NLP?",
+      "chunks_recuperados": [
+        {
+          "fonte": "05_apostila_ia_esesp.pdf",
+          "pagina": 5,
+          "score": 0.3139,
+          "conteudo": "Os Modelos de Linguagem de Grande Escala (LLMs) são redes neurais profundas treinadas em grandes quantidades de dados textuais..."
+        }
+      ],
+      "resposta_gerada": "O sistema admitiu não encontrar material específico sobre embeddings. Respondeu com conhecimento geral: embeddings são representações numéricas de palavras que capturam características semânticas e contextuais, permitindo que modelos de ML processem texto.",
+      "classificacao": "incorreta",
+      "justificativa": "Nenhum chunk relevante recuperado — scores máximos abaixo de 0.32, todos de documentos não relacionados ao tema. Resposta não ancorada no material. Nenhum dos critérios específicos (Word2Vec, representação vetorial densa, similaridade semântica) foi atendido com base no dataset.",
+      "criterios_atendidos": 0,
+      "criterios_totais": 3
+    },
+    {
+      "question_id": 4,
+      "pergunta": "O que é overfitting e como evitá-lo?",
+      "chunks_recuperados": [
+        {
+          "fonte": "01_apostila_machine_learning_ufes.pdf",
+          "pagina": 44,
+          "score": 0.3086,
+          "conteudo": "adaptativos, como ADAM ou ADAGRAD, para diminuir o tempo de treinamento..."
+        }
+      ],
+      "resposta_gerada": "Overfitting ocorre quando modelo se ajusta excessivamente aos dados de treinamento incluindo ruídos, perdendo capacidade de generalização. Estratégias para evitar: regularização, validação cruzada, redução de dimensões, early stopping, aumento de dados.",
+      "classificacao": "parcialmente_correta",
+      "justificativa": "Conceito explicado corretamente com múltiplas técnicas de prevenção válidas. Porém não ancorado no material — chunks recuperados não continham conteúdo sobre overfitting. Critério 'cita técnica específica do material' não atendido.",
+      "criterios_atendidos": 2,
+      "criterios_totais": 3
+    },
+    {
+      "question_id": 5,
+      "pergunta": "Explique como funciona o algoritmo gradient descent (descida de gradiente).",
+      "chunks_recuperados": [
+        {
+          "fonte": "01_apostila_machine_learning_ufes.pdf",
+          "pagina": 23,
+          "score": 0.2954,
+          "conteudo": "A partir do conhecimento do valor do custo a partir desse ponto genérico, pode-se realizar pequenas modificações no valor do peso para que o ponto inicial caminhe na direção do mínimo da função..."
+        },
+        {
+          "fonte": "02_apostila_inteligencia_artificial_uece.pdf",
+          "pagina": 58,
+          "score": 0.2991,
+          "conteudo": "delta padrão essencialmente implementa um gradiente descendente no quadrado da soma do erro para funções de ativação lineares..."
+        }
+      ],
+      "resposta_gerada": "Gradient descent minimiza uma função de custo realizando pequenas modificações nos pesos na direção do mínimo. O vetor gradiente indica direção de maior crescimento; usando seu valor negativo, o algoritmo 'caminha' em direção ao mínimo atualizando os pesos iterativamente.",
+      "classificacao": "correta",
+      "justificativa": "Resposta correta e ancorada no material da apostila UFES (pág. 23). Menciona função de custo, vetor gradiente, direção de descida e atualização de pesos. Todos os critérios atendidos.",
+      "criterios_atendidos": 3,
+      "criterios_totais": 3
+    },
+    {
+      "question_id": 6,
+      "pergunta": "O que são redes neurais convolucionais (CNNs) e para que servem?",
+      "chunks_recuperados": [
+        {
+          "fonte": "02_apostila_inteligencia_artificial_uece.pdf",
+          "pagina": 62,
+          "score": 0.4120,
+          "conteudo": "A característica mais significante de redes neurais está em sua habilidade de aproximar qualquer função contínua não linear..."
+        }
+      ],
+      "resposta_gerada": "O sistema admitiu não encontrar material específico sobre CNNs. Respondeu com conhecimento geral: CNNs são redes especializadas para dados de alta dimensionalidade como imagens, usando operações de convolução para extrair características. Aplicadas em visão computacional e NLP.",
+      "classificacao": "parcialmente_correta",
+      "justificativa": "Chunks recuperados tratam de RNA genérica, não de CNNs especificamente. Resposta correta conceitualmente mas sem ancoragem no material. Critério 'descreve camadas conv/pooling/FC' não atendido com base no dataset.",
+      "criterios_atendidos": 1,
+      "criterios_totais": 3
+    },
+    {
+      "question_id": 7,
+      "pergunta": "Quais são as etapas típicas de um pipeline de processamento de linguagem natural (NLP)?",
+      "chunks_recuperados": [
+        {
+          "fonte": "05_apostila_ia_esesp.pdf",
+          "pagina": 5,
+          "score": 0.3430,
+          "conteudo": "Os Modelos de Linguagem de Grande Escala (LLMs) são redes neurais profundas treinadas em grandes quantidades de dados textuais para compreender e gerar linguagem natural..."
+        }
+      ],
+      "resposta_gerada": "Pipeline de NLP típico: tokenização, normalização, lematização/stemming, remoção de stop words, análise sintática, entendimento semântico, processamento específico da aplicação.",
+      "classificacao": "parcialmente_correta",
+      "justificativa": "Etapas descritas corretamente do ponto de vista técnico, mas não ancoradas no material do dataset. O chunk recuperado trata de LLMs, não de pipelines clássicos de NLP. Critério 'cita fonte do material' não atendido.",
+      "criterios_atendidos": 2,
+      "criterios_totais": 3
+    },
+    {
+      "question_id": 8,
+      "pergunta": "O que é o mecanismo de atenção e qual sua relação com a arquitetura Transformer?",
+      "chunks_recuperados": [
+        {
+          "fonte": "05_apostila_ia_esesp.pdf",
+          "pagina": 5,
+          "score": 0.3000,
+          "conteudo": "Os Modelos de Linguagem de Grande Escala (LLMs) são redes neurais profundas baseados na arquitetura Transformer..."
+        }
+      ],
+      "resposta_gerada": "O sistema não encontrou material relevante. Respondeu com conhecimento geral: mecanismo de atenção permite ao Transformer focar em partes específicas da entrada usando Query, Key e Value. Fundamental para lidar com sequências longas.",
+      "classificacao": "incorreta",
+      "justificativa": "Score máximo 0.3000 — menor de toda a avaliação. Nenhum chunk com conteúdo sobre mecanismo de atenção ou arquitetura Transformer recuperado. Resposta inteiramente do conhecimento geral do LLM sem ancoragem no dataset. Nenhum critério atendido com base no material.",
+      "criterios_atendidos": 0,
+      "criterios_totais": 3
+    },
+    {
+      "question_id": 9,
+      "pergunta": "Explique o algoritmo de clustering K-means.",
+      "chunks_recuperados": [
+        {
+          "fonte": "02_apostila_inteligencia_artificial_uece.pdf",
+          "pagina": 43,
+          "score": 0.2730,
+          "conteudo": "É um método de aprendizagem supervisionado que constrói árvores de classificação a partir de exemplos..."
+        }
+      ],
+      "resposta_gerada": "O sistema admitiu não encontrar material específico. Respondeu com conhecimento geral: K-means divide dados em K clusters minimizando soma dos quadrados das distâncias aos centroides. Passos: escolher K centros, atribuir pontos ao cluster mais próximo, recalcular centroides, repetir até convergência.",
+      "classificacao": "incorreta",
+      "justificativa": "Chunks recuperados tratam de árvores de decisão, não de K-means. Score máximo 0.2730 — segundo mais baixo da avaliação. Resposta tecnicamente correta mas sem qualquer ancoragem no material. Nenhum critério do dataset atendido.",
+      "criterios_atendidos": 0,
+      "criterios_totais": 3
+    },
+    {
+      "question_id": 10,
+      "pergunta": "O que são árvores de decisão e como elas escolhem os critérios de divisão?",
+      "chunks_recuperados": [
+        {
+          "fonte": "02_apostila_inteligencia_artificial_uece.pdf",
+          "pagina": 43,
+          "score": 0.3810,
+          "conteudo": "É um método de aprendizagem supervisionado que constrói árvores de classificação a partir de exemplos (ID3, C4.5, CART). Os métodos baseados em árvores para classificação dividem o espaço de entrada..."
+        }
+      ],
+      "resposta_gerada": "Árvores de decisão são métodos supervisionados que constroem modelos de tomada de decisão. Nós internos representam atributos, ramos representam valores, folhas representam saídas. Critério de divisão: algoritmo ID3 seleciona atributo com melhor separação entre classes. Cita ID3, C4.5 e CART.",
+      "classificacao": "correta",
+      "justificativa": "Chunk diretamente relevante recuperado (apostila UECE pág. 43, score 0.381). Resposta ancorada no material, menciona algoritmos ID3/C4.5/CART e critério de seleção de atributos. Todos os critérios atendidos.",
+      "criterios_atendidos": 3,
+      "criterios_totais": 3
+    }
+  ]
+}

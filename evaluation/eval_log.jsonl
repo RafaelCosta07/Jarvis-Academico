@@ -1,0 +1,10 @@
+{"question_id": 1, "pergunta": "Explique o que é regressão logística e quando ela é usada.", "chunks_recuperados": 0, "tamanho_resposta": 32, "timestamp": "2026-06-14T19:20:40Z"}
+{"question_id": 2, "pergunta": "O que são redes neurais artificiais e quais são seus componentes básicos?", "chunks_recuperados": 0, "tamanho_resposta": 32, "timestamp": "2026-06-14T19:21:00Z"}
+{"question_id": 3, "pergunta": "O que são embeddings e por que são importantes em NLP?", "chunks_recuperados": 0, "tamanho_resposta": 32, "timestamp": "2026-06-14T19:21:19Z"}
+{"question_id": 4, "pergunta": "O que é overfitting e como evitá-lo?", "chunks_recuperados": 0, "tamanho_resposta": 32, "timestamp": "2026-06-14T19:21:39Z"}
+{"question_id": 5, "pergunta": "Explique como funciona o algoritmo gradient descent (descida de gradiente).", "chunks_recuperados": 0, "tamanho_resposta": 32, "timestamp": "2026-06-14T19:21:59Z"}
+{"question_id": 6, "pergunta": "O que são redes neurais convolucionais (CNNs) e para que servem?", "chunks_recuperados": 0, "tamanho_resposta": 32, "timestamp": "2026-06-14T19:22:19Z"}
+{"question_id": 7, "pergunta": "Quais são as etapas típicas de um pipeline de processamento de linguagem natural (NLP)?", "chunks_recuperados": 0, "tamanho_resposta": 32, "timestamp": "2026-06-14T19:22:39Z"}
+{"question_id": 8, "pergunta": "O que é o mecanismo de atenção e qual sua relação com a arquitetura Transformer?", "chunks_recuperados": 0, "tamanho_resposta": 32, "timestamp": "2026-06-14T19:22:59Z"}
+{"question_id": 9, "pergunta": "Explique o algoritmo de clustering K-means.", "chunks_recuperados": 0, "tamanho_resposta": 32, "timestamp": "2026-06-14T19:23:18Z"}
+{"question_id": 10, "pergunta": "O que são árvores de decisão e como elas escolhem os critérios de divisão?", "chunks_recuperados": 0, "tamanho_resposta": 32, "timestamp": "2026-06-14T19:23:38Z"}

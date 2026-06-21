@@ -21,7 +21,7 @@ from app.utils.logger import registrar_chamada_tool
 logger = logging.getLogger(__name__)
 
 _MAX_ITERACOES = 8
-_MAX_TOKENS = 512
+_MAX_TOKENS = 2048
 _REACT_PATTERN = re.compile(
     r'TOOL:\s*(\w+)\s+INPUT:\s*(\{.*?\})',
     re.DOTALL | re.IGNORECASE,
@@ -88,6 +88,10 @@ REGRAS IMPORTANTES:
 3. Após receber o resultado da ferramenta, responda ao usuário em português natural
    e amigável. Nunca mostre o resultado bruto JSON ao usuário.
    Ao usar buscar_material_rag, cite o nome do arquivo fonte na resposta.
+   EXCEÇÃO gerar_exercicios: transcreva o campo "exercicios" EXATAMENTE como retornado,
+   sem reformatar, resumir ou converter para texto corrido.
+   EXCEÇÃO active_recall modo pergunta: exiba apenas a pergunta ao usuário.
+   NUNCA revele a resposta correta nem dê qualquer dica antes de o usuário responder.
 
 4. Para DATAS: hoje é {data_hoje}. Calcule datas relativas corretamente:
    - "amanhã" = dia seguinte a {data_hoje}
